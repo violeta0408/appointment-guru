@@ -24,8 +24,8 @@ public class Main {
             */
 
             //to check - what is in DB about Doctors
-            System.out.println("All records about Doctors in the database");
-            Doctors.printAllRecordDoctor(connection);
+            //System.out.println("All records about Doctors in the database");
+            //Doctors.printAllRecordDoctor(connection);
 
             /*
             //to check - what is in DB about Appointment
@@ -54,26 +54,25 @@ public class Main {
                     // perform if and only if none of the above conditions are met
                     System.out.println("Please enter a valid number - 1, 2 or 3.");
             }
+
+            //to check - what is in DB about Doctor
+            //System.out.println("All records about Doctor in the database");
+            //Doctors.printAllRecordDoctor(connection);
+
+            /*
+            //to check - what is in DB about Appointment
+            System.out.println("All records about Appointment in the database");
+            OperationFile.printAllRecordAppointment(connection);
+            */
+
+            //delete table "doctor"
+            //OperationFile.deleteTable(connection, "doctor");
+
+            /*
+            //delete table "appointment"
+            //OperationFile.deleteTable(connection, "appointment");
+            */
+
         }
     }
 }
-
-
-
-/*
-
-    //to check - what is in DB about Doctor
-                    System.out.println("All records about Doctor in the database");
-                    OperationFile.printAllRecordDoctor(connection);
-
-    //to check - what is in DB about Appointment
-                    System.out.println("All records about Appointment in the database");
-                    OperationFile.printAllRecordAppointment(connection);
-
-    //delete table "doctor"
-    //OperationFile.deleteTable(connection, "doctor");
-
-    //delete table "appointment"
-                    OperationFile.deleteTable(connection,"appointment");
-
-*/

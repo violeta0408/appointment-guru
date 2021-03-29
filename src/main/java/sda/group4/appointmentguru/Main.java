@@ -60,7 +60,7 @@ public class Main {
 
 
 
-
+/*
 
     //to check - what is in DB about Doctor
                     System.out.println("All records about Doctor in the database");
@@ -76,3 +76,4 @@ public class Main {
     //delete table "appointment"
                     OperationFile.deleteTable(connection,"appointment");
 
+*/

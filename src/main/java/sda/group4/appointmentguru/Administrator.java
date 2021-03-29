@@ -1,12 +1,13 @@
 package sda.group4.appointmentguru;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.util.Scanner;
 
 public class Administrator {
 
-    public static void updateInformation(Connection connection) {
+    public static void updateInformation(Connection connection) throws SQLException {
         //start with while - to can run application many times
         int runApplication = 1;
         while (runApplication == 1) {

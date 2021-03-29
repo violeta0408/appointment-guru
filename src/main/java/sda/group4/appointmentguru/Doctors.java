@@ -4,6 +4,7 @@ import java.sql.*;
 
 public class Doctors {
 
+
     // to create table with Doctors, who work in our hospital
     public static void createTableDoctor(Connection connection) throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS doctor(" +

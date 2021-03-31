@@ -1,6 +1,7 @@
 package sda.group4.appointmentguru;
 
 import java.sql.*;
+import java.util.Scanner;
 
 public class Doctors {
 
@@ -83,6 +84,36 @@ public class Doctors {
             }
         }
     }
+
+    public static void insertDoctorDetails (Connection connection) throws SQLException {
+
+        //to get information from console about doctor
+        Scanner scanner1 = new Scanner(System.in);
+        System.out.println("Enter doctor's medical speciality:");
+        String doctor_medical_speciality = scanner1.nextLine();
+        System.out.println("Enter doctor's name:");
+        String doctor_name = scanner1.nextLine();
+        System.out.println("Enter doctor's surname:");
+        String doctor_surname = scanner1.nextLine();
+        System.out.println("Enter doctor's room number:");
+        Integer doctor_room_number = scanner1.nextInt();
+        System.out.println("Enter the start time of the doctor's working hours (hh:mm:ss): ");
+        Time doctor_work_start_time = Time.valueOf(scanner1.next());
+        System.out.println("Enter the end time of the doctor's working hours (hh:mm:ss): ");
+        Time doctor_work_end_time = Time.valueOf(scanner1.next());
+        System.out.println("Enter the price of appointment:");
+        Double doctor_visit_price = scanner1.nextDouble();
+
+        //to load information about a doctor to Doctor table
+        System.out.println("Information about doctor is loading in database");
+        Doctors.insertIntoDoctorTable(connection,
+                doctor_medical_speciality,
+                doctor_name, doctor_surname,
+                doctor_room_number,
+                doctor_work_start_time,
+                doctor_work_end_time,
+                doctor_visit_price); //insert information in table
+        }
 
     // to update information in Doctor table, if it was some mistake before
     public static void updateRecordDoctor(Connection connection,

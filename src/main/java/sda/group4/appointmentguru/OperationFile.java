@@ -31,12 +31,15 @@ public class OperationFile {
                 "doctor_work_end_time TIME," +
                 "doctor_visit_price DOUBLE," +
 
+                //id_visit, id_doctor_code, visit_date, visit_start_time, visit_end_time, date_time_busy, patient_person_code
+
                 "visit_date DATE," +
                 "visit_start_time TIME," +
                 "visit_end_time TIME," +
 
                 "date_time_busy INT," +
 
+                //id_patient=patient_person_code, patient_name, patient_surname, patient_phone_number, id_visit, id_doctor_code,
                 "patient_person_code VARCHAR(200)," +
                 "patient_name VARCHAR(200)," +
                 "patient_surname VARCHAR(200)," +

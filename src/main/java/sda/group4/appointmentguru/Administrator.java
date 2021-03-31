@@ -32,20 +32,21 @@ public class Administrator {
                     Doctors.printAllRecordDoctor(connection);
 
                     //to get information from console about doctor
-                    System.out.println("Enter doctor medical speciality:");
-                    String doctor_medical_speciality = scanner.next();
-                    System.out.println("Enter doctor name:");
-                    String doctor_name = scanner.next();
-                    System.out.println("Enter doctor surname:");
-                    String doctor_surname = scanner.next();
-                    System.out.println("Enter doctor room number:");
-                    Integer doctor_room_number = scanner.nextInt();
-                    System.out.println("Enter doctor work start time:");
-                    Time doctor_work_start_time = Time.valueOf(scanner.next());
-                    System.out.println("Enter doctor work end time:");
-                    Time doctor_work_end_time = Time.valueOf(scanner.next());
-                    System.out.println("Enter doctor visit price:");
-                    Double doctor_visit_price = scanner.nextDouble();
+                    Scanner scanner1 = new Scanner(System.in);
+                    System.out.println("Enter doctor's medical speciality:");
+                    String doctor_medical_speciality = scanner1.nextLine();
+                    System.out.println("Enter doctor's name:");
+                    String doctor_name = scanner1.nextLine();
+                    System.out.println("Enter doctor's surname:");
+                    String doctor_surname = scanner1.nextLine();
+                    System.out.println("Enter doctor's room number:");
+                    Integer doctor_room_number = scanner1.nextInt();
+                    System.out.println("Enter the start time of the doctor's working hours (hh:mm:ss): ");
+                    Time doctor_work_start_time = Time.valueOf(scanner1.next());
+                    System.out.println("Enter the end time of the doctor's working hours (hh:mm:ss): ");
+                    Time doctor_work_end_time = Time.valueOf(scanner1.next());
+                    System.out.println("Enter the price of appointment:");
+                    Double doctor_visit_price = scanner1.nextDouble();
 
                     //to load information about a doctor to Doctor table
                     System.out.println("Information about doctor is loading in database");
@@ -73,20 +74,21 @@ public class Administrator {
 
                     //te var būt izvēle par to, kuru informāciju vadisim pa jaunu
                     //to get new information from console about doctor
-                    System.out.println("Enter doctor medical speciality:");
-                    String doctor_medical_speciality_Update = scanner.next();
-                    System.out.println("Enter doctor name:");
-                    String doctor_name_Update = scanner.next();
-                    System.out.println("Enter doctor surname:");
-                    String doctor_surname_Update = scanner.next();
-                    System.out.println("Enter doctor room number:");
-                    Integer doctor_room_number_Update = scanner.nextInt();
-                    System.out.println("Enter doctor work start time:");
-                    Time doctor_work_start_time_Update = Time.valueOf(scanner.next());
-                    System.out.println("Enter doctor work end time:");
-                    Time doctor_work_end_time_Update = Time.valueOf(scanner.next());
-                    System.out.println("Enter doctor visit price:");
-                    Double doctor_visit_price_Update = scanner.nextDouble();
+                    Scanner scanner2 = new Scanner(System.in);
+                    System.out.println("Enter doctor's medical speciality:");
+                    String doctor_medical_speciality_Update = scanner2.nextLine();
+                    System.out.println("Enter doctor's name:");
+                    String doctor_name_Update = scanner2.nextLine();
+                    System.out.println("Enter doctor's surname:");
+                    String doctor_surname_Update = scanner2.nextLine();
+                    System.out.println("Enter doctor's room number:");
+                    Integer doctor_room_number_Update = scanner2.nextInt();
+                    System.out.println("Enter the start time of the doctor's working hours (hh:mm:ss): ");
+                    Time doctor_work_start_time_Update = Time.valueOf(scanner2.next());
+                    System.out.println("Enter the end time of the doctor's working hours (hh:mm:ss): ");
+                    Time doctor_work_end_time_Update = Time.valueOf(scanner2.next());
+                    System.out.println("Enter the price of appointment:");
+                    Double doctor_visit_price_Update = scanner2.nextDouble();
 
                     // to update information in Doctor table, if it was some mistake before
                     Doctors.updateRecordDoctor(connection,

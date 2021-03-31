@@ -18,6 +18,12 @@ public class Main {
             //create table for information about Doctors, who work in our hospital
             Doctors.createTableDoctor(connection);
 
+            //create table for information about Appointments
+            Appointment.createTableAppointments(connection);
+
+            //create table for information about Patient
+            Patients.createTablePatient(connection);
+
             /*
             //create table for information about Doctors, appointment Date, Time (start, end), information is DateTime busy(1) or not(null,0) and information about Patient
             OperationFile.createTableAppointment(connection);
@@ -68,10 +74,12 @@ public class Main {
             //delete table "doctor"
             //OperationFile.deleteTable(connection, "doctor");
 
-            /*
+            //delete table "patient"
+            //OperationFile.deleteTable(connection, "patient");
+
             //delete table "appointment"
             //OperationFile.deleteTable(connection, "appointment");
-            */
+
 
         }
     }

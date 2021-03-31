@@ -19,7 +19,7 @@ public class Administrator {
 
             //enter choose what you will to do in our application
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Enter your choose: ");
+            System.out.println("Enter your choice: ");
             int selectedChoose = scanner.nextInt();
 
             //operation after selectedChoose depend of choose - start process

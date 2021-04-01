@@ -88,7 +88,7 @@ public class Administrator {
                 default:
                     //all other choose
                     // perform if and only if none of the above conditions are met
-                    System.out.println("Please enter a valid number - 1, 2 or 3.");
+                    System.out.println("Please enter a valid number - 1, 2, 3 or 4.");
             }
             System.out.println("Will you do some more operation. If yes - press 1");
             runApplication = scanner.nextInt();

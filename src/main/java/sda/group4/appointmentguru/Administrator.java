@@ -11,12 +11,13 @@ public class Administrator {
         int runApplication = 1;
         while (runApplication == 1) {
             //information about what is possible to do in our application
-            System.out.println("Please type (1-3) what would you like to do: ");
-            System.out.println("  1 - to put new information about a doctor in database;");
-            System.out.println("  2 - to make changes in information about a doctor in database;");
-            System.out.println("  3 - to delete information about a doctor in database;");
+            System.out.println("Please type (1-4) what would you like to do: ");
+            System.out.println("1 - to put a new information about a doctor in the database;");
+            System.out.println("2 - to make changes in the information about a doctor in the database;");
+            System.out.println("3 - to delete information about a doctor in database;");
+            System.out.println("4 - to create an available appointment time in the schedule");
 
-            //enter choose what you will to do in our application
+            // choose what you will do in our application
             Scanner scanner = new Scanner(System.in);
             System.out.println("Enter your choice: ");
             int selectedChoose = scanner.nextInt();
@@ -76,6 +77,13 @@ public class Administrator {
                     System.out.println("All records in the database");
                     OperationFile.printAllRecordAppointment(connection);
                     */
+                    break;
+
+                case 4:
+                    // 4 - to create a schedule with available appointment times
+                    Appointment.insertInfoIntoSchedule(connection);
+
+
                     break;
                 default:
                     //all other choose

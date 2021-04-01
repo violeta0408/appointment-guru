@@ -2,10 +2,12 @@ package sda.group4.appointmentguru;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
+
         Connection connection = OperationFile.getConnection();
 
         if (connection == null) {
@@ -16,13 +18,16 @@ public class Main {
             System.out.println("Hello in our hospital application!");
 
             //create table for information about Doctors, who work in our hospital
-            Doctors.createTableDoctor(connection);
+            // Doctors.createTableDoctor(connection);
 
             //create table for information about Appointments
             Appointment.createTableAppointments(connection);
 
             //create table for information about Patient
             Patients.createTablePatient(connection);
+
+            // create table called Schedule
+            Appointment.createTableSchedule(connection);
 
             /*
             //create table for information about Doctors, appointment Date, Time (start, end), information is DateTime busy(1) or not(null,0) and information about Patient

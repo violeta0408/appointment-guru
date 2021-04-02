@@ -22,6 +22,60 @@ public class Appointment {
         }
     }
 
+    public static void updateAppointmentsWithPatientBusy(Connection connection, int id_appointment, String patient_person_code) throws SQLException {
+        String sql = "UPDATE appointment SET date_time_busy=?, patient_person_code=? WHERE id_appointment=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, 1);
+            statement.setString(2, patient_person_code);
+            statement.setInt(3, id_appointment);
+            boolean isSuccessful = statement.execute();
+            if (isSuccessful) {
+                System.out.println("Record about Appointment is updated");
+            }
+        }
+    }
+
+    public static void updateAppointmentsWithNotBusy(Connection connection, String patient_person_code, Date visit_date, Time visit_time) throws SQLException {
+        String sql = "UPDATE appointment SET date_time_busy=?, patient_person_code=? WHERE patient_person_code=? AND visit_date=? AND visit_time=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, 0);
+            statement.setString(2, null);
+            statement.setString(3, patient_person_code);
+            statement.setDate(4, visit_date);
+            statement.setTime(5, visit_time);
+            boolean isSuccessful = statement.execute();
+            if (isSuccessful) {
+                System.out.println("Record about Appointment is updated with - not busy");
+            }
+        }
+    }
+
+    // to get all records with appointment available for Patient
+    public static void printAllRecordDateTimeAvailable(Connection connection, int selected_id_doctor_code) throws SQLException {
+        String sql = "SELECT appointment.id_appointment, " +
+                "doctor.doctor_medical_speciality, doctor.doctor_name, doctor.doctor_surname, " +
+                "appointment.visit_date, appointment.visit_time from appointment inner join doctor " +
+                "on appointment.id_doctor_code=doctor.id_doctor_code where appointment.date_time_busy=0 and appointment.id_doctor_code=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, selected_id_doctor_code);
+            ResultSet resultSet = statement.executeQuery();
+            System.out.println("id_appointment | doctor_medical_speciality | doctor_name | doctor_surname  | visit_date | visit_time");
+            while (resultSet.next()) {
+                Integer id_appointment = resultSet.getInt("id_appointment");
+                String doctor_medical_speciality = resultSet.getString("doctor_medical_speciality");
+                String doctor_name = resultSet.getString("doctor_name");
+                String doctor_surname = resultSet.getString("doctor_surname");
+                Date visit_date = resultSet.getDate("visit_date");
+                Time visit_time = resultSet.getTime("visit_time");
+                System.out.println(id_appointment + " | " + doctor_medical_speciality + " | "
+                        + doctor_name + " | " + doctor_surname + " | "
+                        + visit_date + " | " + visit_time);
+
+            }
+        }
+    }
+
+
     // to create table called Schedule
     public static void createTableSchedule(Connection connection) throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS schedule (" +
@@ -42,13 +96,13 @@ public class Appointment {
 
     // to insert information in the Schedule table
     public static void insertInfoIntoTableSchedule(Connection connection,
-                                               String doctor_name,
-                                               String doctor_surname,
-                                               String doctor_medical_speciality,
-                                               Date visit_date,
-                                               Time visit_time,
-                                               Integer date_time_busy,
-                                               String patient_person_code) throws SQLException {
+                                                   String doctor_name,
+                                                   String doctor_surname,
+                                                   String doctor_medical_speciality,
+                                                   Date visit_date,
+                                                   Time visit_time,
+                                                   Integer date_time_busy,
+                                                   String patient_person_code) throws SQLException {
         String sql = "INSERT INTO schedule (doctor_name, " +
                 "doctor_surname, " +
                 "doctor_medical_speciality, " +

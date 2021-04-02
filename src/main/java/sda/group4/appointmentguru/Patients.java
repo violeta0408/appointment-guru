@@ -51,10 +51,10 @@ public class Patients {
         }
     }
 
-    public static void insertPatientDetails (Connection connection) throws SQLException {
+    public static void insertPatientDetails(Connection connection, String patient_person_code) throws SQLException {
         Scanner scanner1 = new Scanner(System.in);
-        System.out.println("Enter patient person code: ");
-        String patient_person_code = scanner1.nextLine();
+        //System.out.println("Enter patient person code: ");
+        //String patient_person_code = scanner1.nextLine();
         System.out.println("Enter patient name: ");
         String patient_name = scanner1.nextLine();
         System.out.println("Enter patient surname: ");
@@ -82,60 +82,52 @@ public class Patients {
             switch (selectedChoose) {
                 case 1:
                     //1 - to apply visit to a doctor
+                    System.out.println("You can apply to the doctor from a list: ");
+                    Doctors.printAllRecordDoctor(connection);
+                    System.out.println("To apply please enter id_doctor_code from a list: ");
+                    int selected_id_doctor_code = scanner.nextInt();
 
-                    // daktera, dienas un laika izvele - jaizveido
-                    // !!! te jadarbojas, ka veidot izveli
-                    // padaidam ta, bet jaliek parbaude
-                    // ? pielikt par dakteri
+                    System.out.println("You can apply to visit from a list: ");
+                    Appointment.printAllRecordDateTimeAvailable(connection, selected_id_doctor_code);
+                    System.out.println("To apply please enter id_appointment from a list: ");
+                    int selected_id_appointment = scanner.nextInt();
 
-                    System.out.println("Enter date (YYYY-MM-DD): ");
-                    Date visit_date_toPutPatient = Date.valueOf(scanner.next());
-                    System.out.println("Enter start time (HH:MM:SS) :");
-                    Time visit_start_time_toPutPatient = Time.valueOf(scanner.next());
+                    //System.out.println("Enter date (YYYY-MM-DD): ");
+                    //Date visit_date_toPutPatient = Date.valueOf(scanner.next());
+                    //System.out.println("Enter start time (HH:MM:SS) :");
+                    //Time visit_start_time_toPutPatient = Time.valueOf(scanner.next());
+
+                    System.out.println("Enter patient person code: ");
+                    String patient_person_code1 = scanner.next();
 
                     //to get new information from console about patient
-                    Patients.insertPatientDetails(connection);
+                    Patients.insertPatientDetails(connection, patient_person_code1);
 
-                    //pec ievadisanas, informaciju par pacientu jaieliek liela tabula
-                    //var ievest 1,0 - laiks pieejams, aiznemts un mainot info saja lauka - so jaskaas ka sanaca realizet
-
-                    //OperationFile.updateAppointmentPatient(connection, patient_person_code_toPutPatient, patient_name_toPutPatient, patient_surname_toPutPatient, patient_phone_number_toPutPatient, visit_date_toPutPatient, visit_start_time_toPutPatient);
+                    //to update information in Appointment table
+                    Appointment.updateAppointmentsWithPatientBusy(connection, selected_id_appointment, patient_person_code1);
 
                     break;
 
                 case 2:
                     //2 - to delete visit to a doctor
-
-                    // prasit ievadit kadu informaciju un balstoties uz to meklet info liela tabula un izdzest info kados laukos, kas ir par pacientu un nomainit (1 uz 0) -laiks pieejams
-
-                    // !!! te jadarbojas un japadoma ka veidot izveli
-                    //dienas un laika norade - jaizveido
-                    //info par pacientu, par arstu - vai vajag, vai likt ievadit kaut-ko lai parbaudit
-                    // ? pielikt par dakteri
-                    // padaidam ta
-
-                    System.out.println("Please enter the date of the visit which you would like to cancel (YYYY-MM-DD): ");
-                    Date visit_date_toDeletePatient = Date.valueOf(scanner.next());
-                    System.out.println("Please enter the time of the visit which you would like to cancel (HH:MM:SS): ");
-                    Time visit_start_time_toDeletePatient = Time.valueOf(scanner.next());
-
-                    //? vai vajag un ko no ta vajag - vai so izmantot parbaudei
-                    //to get new information from console about patient
-
+                    System.out.println("Please enter the information to cancel your visit. ");
                     System.out.println("Please enter yours person code: ");
-                    String patient_person_code = scanner.nextLine();
-                    //te butu jaizdzes pierakstu deleteRecordAppointment
-                    Patients.deleteRecordPatient(connection,patient_person_code);
+                    String patient_person_code = scanner.next();
+                    System.out.println("Please enter the date of the visit which you would like to cancel (YYYY-MM-DD): ");
+                    Date visit_date_toDeleteVisit = Date.valueOf(scanner.next());
+                    System.out.println("Please enter the time of the visit which you would like to cancel (HH:MM:SS): ");
+                    Time visit_time_toDeleteVisit = Time.valueOf(scanner.next());
 
-                    //pec ievadisanas, informaciju par pacientu jaieliek liela tabula
-                    //var ievest 1,0 - laiks pieejams, aiznemts un mainot info saja lauka - so jaskaas ka sanaca realizet
+                    //?+info par arstu - vai vajag, vai likt ievadit kaut-ko lai parbaudit
+                    Appointment.updateAppointmentsWithNotBusy(connection, patient_person_code, visit_date_toDeleteVisit, visit_time_toDeleteVisit);
 
-                    //OperationFile.updateAppointmentPatientDelete(connection, patient_person_code_toDeletePatient, patient_name_toDeletePatient, patient_surname_toDeletePatient, patient_phone_number_toDeletePatient, visit_date_toDeletePatient, visit_start_time_toDeletePatient);
+                    //to delete information about Patient from DB
+                    Patients.deleteRecordPatient(connection, patient_person_code);
 
                     break;
+
                 default:
-                    //all other choose
-                    // perform if and only if none of the above conditions are met
+                    // all other choose: perform if and only if none of the above conditions are met
                     System.out.println("Please enter a valid number - 1 or 2.");
             }
             System.out.println("Will you do some more operation. If yes - press 1");

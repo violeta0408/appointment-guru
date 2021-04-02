@@ -2,7 +2,6 @@ package sda.group4.appointmentguru;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.Scanner;
 
 public class Main {
@@ -18,7 +17,7 @@ public class Main {
             System.out.println("Hello in our hospital application!");
 
             //create table for information about Doctors, who work in our hospital
-            // Doctors.createTableDoctor(connection);
+            Doctors.createTableDoctor(connection);
 
             //create table for information about Appointments
             Appointment.createTableAppointments(connection);
@@ -85,7 +84,8 @@ public class Main {
             //delete table "appointment"
             //OperationFile.deleteTable(connection, "appointment");
 
-
+            //delete table "schedule"
+            //OperationFile.deleteTable(connection, "schedule");
         }
     }
 }

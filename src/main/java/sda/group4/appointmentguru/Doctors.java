@@ -95,9 +95,12 @@ public class Doctors {
 
     // to get all records about Doctors, who work in our hospital
     public static void printAllRecordDoctor(Connection connection) throws SQLException {
-        String sql = "SELECT * from doctor";
+        String sql = "SELECT * from doctor order by doctor_medical_speciality";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
+            System.out.println("id_doctor_code  |  doctor_medical_speciality  |  "
+                    + "doctor_name  |  doctor_surname  |  doctor_room_number  |  "
+                    + "doctor_work_start_time  |  doctor_work_end_time  |  doctor_visit_price");
             while (resultSet.next()) {
                 Integer id_doctor_code = resultSet.getInt("id_doctor_code");
                 String doctor_medical_speciality = resultSet.getString("doctor_medical_speciality");

@@ -6,7 +6,7 @@ public class OperationFile {
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/she_goes_tech", "root", "tasite7!L");
+                "jdbc:mysql://localhost:3306/she_goes_tech", "root", "password");
     }
 
     // to delete some table, if we need

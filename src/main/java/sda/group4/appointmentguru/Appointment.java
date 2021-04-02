@@ -2,7 +2,6 @@ package sda.group4.appointmentguru;
 
 import java.sql.*;
 import java.util.Scanner;
-import java.util.Timer;
 
 public class Appointment {
 
@@ -75,6 +74,33 @@ public class Appointment {
         }
     }
 
+    // to get all records with appointment available with visit to a Doctor
+    public static void printAllRecordDateTimeToDoctor(Connection connection, int selected_id_doctor_code) throws SQLException {
+        String sql = "SELECT appointment.id_appointment," +
+                //" doctor.doctor_medical_speciality, doctor.doctor_name, doctor.doctor_surname, " +
+                "appointment.visit_date, appointment.visit_time from appointment inner join doctor " +
+                "on appointment.id_doctor_code=doctor.id_doctor_code where appointment.date_time_busy=1 and appointment.id_doctor_code=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, selected_id_doctor_code);
+            ResultSet resultSet = statement.executeQuery();
+            System.out.println("id_appointment | visit_date | visit_time");
+            //System.out.println("id_appointment | doctor_medical_speciality | doctor_name | doctor_surname  | visit_date | visit_time");
+            while (resultSet.next()) {
+                Integer id_appointment = resultSet.getInt("id_appointment");
+                //String doctor_medical_speciality = resultSet.getString("doctor_medical_speciality");
+                //String doctor_name = resultSet.getString("doctor_name");
+                //String doctor_surname = resultSet.getString("doctor_surname");
+                Date visit_date = resultSet.getDate("visit_date");
+                Time visit_time = resultSet.getTime("visit_time");
+                //System.out.println(id_appointment + " | " + doctor_medical_speciality + " | "
+                //        + doctor_name + " | " + doctor_surname + " | "
+                //        + visit_date + " | " + visit_time);
+                System.out.println(id_appointment + " | "
+                        + visit_date + " | " + visit_time);
+
+            }
+        }
+    }
 
     // to create table called Schedule
     public static void createTableSchedule(Connection connection) throws SQLException {

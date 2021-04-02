@@ -186,5 +186,50 @@ public class Doctors {
                 doctorIdToUpdate);
     }
 
+    public static void DoctorRequest(Connection connection) throws SQLException {
+        //start with while - to can run application many times
+        int runApplication = 1;
+        while (runApplication == 1) {
+            //information about what is possible to do in our application
+            System.out.println("Please type (1-2) what would you like to do: ");
+            System.out.println("  1 - to see all appointment as a doctor;");
+            System.out.println("  2 - to see next appointment details as a doctor.");
+
+            //enter choose what you will to do in our application
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Enter your choice: ");
+            int selectedChoose = scanner.nextInt();
+
+            //operation after selectedChoose depend of choose - start process
+            switch (selectedChoose) {
+                case 1:
+                    //1 - to see all appointment as a doctor
+                    System.out.println("In our hospital work the doctors from a list: ");
+                    Doctors.printAllRecordDoctor(connection);
+                    System.out.println("Please enter yours id_doctor_code (from a list): ");
+                    int selected_id_doctor_code = scanner.nextInt();
+                    System.out.println("Yours all appointment as a doctor: ");
+                    Appointment.printAllRecordDateTimeToDoctor(connection, selected_id_doctor_code);
+                    break;
+
+                case 2:
+                    //2 - to see next appointment details as a doctor
+                    System.out.println("In our hospital work the doctors from a list: ");
+                    Doctors.printAllRecordDoctor(connection);
+                    System.out.println("Please enter yours id_doctor_code (from a list): ");
+                    int selected_id_doctor_code2 = scanner.nextInt();
+                    System.out.println("Yours next appointment as a doctor: ");
+                    //te, jāsataisa, lai būtu next appointment
+                    //Appointment.printAllRecordDateTimeToDoctor(connection, selected_id_doctor_code2);
+                    break;
+
+                default:
+                    // all other choose: perform if and only if none of the above conditions are met
+                    System.out.println("Please enter a valid number - 1 or 2.");
+            }
+            System.out.println("Will you do some more operation. If yes - press 1");
+            runApplication = scanner.nextInt();
+        }
+    }
 
 }

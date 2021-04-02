@@ -53,15 +53,13 @@ public class Main {
                     Patients.appointmentRequest(connection);
                     break;
                 case 2:
-                    //Doctors - struktura lidzigi ka Patients.appointmentRequest
-
+                    Doctors.DoctorRequest(connection);
                     break;
                 case 3:
                     Administrator.updateInformation(connection);
                     break;
                 default:
-                    //all other choose
-                    // perform if and only if none of the above conditions are met
+                    //all other choose - perform if and only if none of the above conditions are met
                     System.out.println("Please enter a valid number - 1, 2 or 3.");
             }
 

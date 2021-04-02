@@ -1,6 +1,7 @@
 package sda.group4.appointmentguru;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Appointment {
@@ -174,6 +175,50 @@ public class Appointment {
         Appointment.insertInfoIntoTableSchedule(connection, doctor_name, doctor_surname, doctor_medical_speciality, visit_date, visit_time, date_time_busy, patient_person_code); //to insert information in table
 
 
+    }
+    public static void viewMyAppointmentDoctor(Connection connection) throws SQLException {
+        System.out.println("To see all appointments, enter doctor's id code: ");
+        Scanner scanner = new Scanner(System.in);
+        int identification = scanner.nextInt();
+
+        String query = "SELECT * FROM appointment WHERE id_doctor_code = "+ identification +" AND date_time_busy = '1'";
+
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+
+        while (resultSet.next()) {
+            int id_doctor_name = resultSet.getInt("id_doctor_name");
+            Date visit_date = resultSet.getDate("visit_date");
+            Time visit_time = resultSet.getTime("visit_time");
+            String patient_person_code = resultSet.getString("patient_person_code");
+
+            System.out.printf("Doctor's id: %s, date: %s, time: %s, patient: %s \n", id_doctor_name, visit_date, visit_time, patient_person_code);
+        }
+        statement.close();
+    }
+
+    public static void viewAppointmentForToday(Connection connection) throws SQLException {
+        LocalDate date = LocalDate.now();
+        System.out.println("Current Date is " + date);
+
+        System.out.println("To see all appointments, enter doctor's id code: ");
+        Scanner scanner = new Scanner(System.in);
+        int identification = scanner.nextInt();
+
+        String query = "SELECT * FROM appointment WHERE id_doctor_code = "+ identification +" AND visit_date = " + date +" AND date_time_busy = '1'";
+
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+        System.out.printf("On %d you have the following appointments", date);
+        while (resultSet.next()) {
+            int id_doctor_name = resultSet.getInt("id_doctor_name");
+            //Date visit_date = resultSet.getDate("visit_date");
+            Time visit_time = resultSet.getTime("visit_time");
+            String patient_person_code = resultSet.getString("patient_person_code");
+
+            System.out.printf("Doctor's id: %s, time: %s, patient: %s \n", id_doctor_name, visit_time, patient_person_code);
+        }
+        statement.close();
     }
 
 

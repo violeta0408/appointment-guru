@@ -33,6 +33,8 @@ public class Main {
 //            To see doctor's appointments
 //            Appointment.viewMyAppointmentDoctor(connection);
 //            Appointment.viewAppointmentForToday(connection);
+//            Appointment.viewMyAppointmentPatient(connection);
+
             /*
             //create table for information about Doctors, appointment Date, Time (start, end), information is DateTime busy(1) or not(null,0) and information about Patient
             OperationFile.createTableAppointment(connection);

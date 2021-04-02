@@ -239,5 +239,57 @@ public class Appointment {
         statement.close();
     }
 
+    public static void viewMyAppointmentPatient(Connection connection) throws SQLException {
+        System.out.println("To see all appointments, enter your personal id code: ");
+        //Gribēju, lai pacients ievada savu id, kas atbilst patient_person_code
+        //pacienta ievadita vertiba tiktu izamntota šeit:
+        //where patient_person_code = " + id + ", bet tas nestrādā, parādās error, neesmu izdomājusi, kā to atrisināt
+        //tā, kā esmu atstājusi pašlaik, strādā, bet tas nav risinājums, būs jāpadomā, kā vēl sataisīt.
+//        neizdevās arī sakārtot hronoloģiski, mainīju order by mainīgo secību, bet neizdevās
+        Scanner scanner = new Scanner(System.in);
+        String id = scanner.nextLine();
+
+        String query = "SELECT id_appointment, visit_date,visit_time, " +
+                "patient_name, patient_surname, " +
+                "doctor_medical_speciality, doctor_name, doctor_surname, doctor_room_number, doctor_visit_price " +
+                "FROM appointment " +
+                //"INNER JOIN patient ON patient.patient_person_code = appointment.patient_person_code " +
+                //"INNER JOIN doctor ON doctor.id_doctor_code = appointment.id_doctor_code " +
+                "INNER JOIN patient USING (patient_person_code) " +
+                "INNER JOIN doctor USING (id_doctor_code) " +
+               // "WHERE patient_person_code = " + id + " AND date_time_busy = '1' " +
+                "WHERE patient_person_code = '369859-15625' AND date_time_busy = '1' " +
+                "ORDER BY id_appointment AND visit_date AND visit_time ";
+
+//te vajadzētu ievietot loop, lai pārbaudītu vai  tāds id eksistē
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+        System.out.printf("List of your appointment(s): \n");
+        while (resultSet.next()) {
+            Integer id_appointment = resultSet.getInt("id_appointment");
+            Date visit_date = resultSet.getDate("visit_date");
+            Time visit_time = resultSet.getTime("visit_time");
+            String patient_name = resultSet.getString("patient_name");
+            String patient_surname = resultSet.getString("patient_surname");
+            String doctor_medical_speciality = resultSet.getString("doctor_medical_speciality");
+            String doctor_name = resultSet.getString("doctor_name");
+            String doctor_surname = resultSet.getString("doctor_surname");
+            int doctor_room_number = resultSet.getInt("doctor_room_number");
+            double doctor_visit_price = resultSet.getDouble("doctor_visit_price");
+
+            System.out.printf("Appointment id: %s, Date and time of appointment: %s at %s, \n" +
+                            "Patient: %s %s, \n" +
+                            "Doctor (speciality): %s, %s (%s) \n" +
+                            "Room: %s, \n" +
+                            "Price of the appointment: %s eur \n" +
+                            "----------------------------------\n",
+                    id_appointment, visit_date, visit_time, patient_name, patient_surname,
+                    doctor_name, doctor_surname, doctor_medical_speciality,
+                    doctor_room_number, doctor_visit_price);
+        }
+        statement.close();
+
+    }
+
 
 }

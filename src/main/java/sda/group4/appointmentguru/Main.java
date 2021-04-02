@@ -27,7 +27,12 @@ public class Main {
 
             // create table called Schedule
             Appointment.createTableSchedule(connection);
+//            Appointment.printAllRecordDateTimeAvailable(connection,1);
+//            Appointment.printAllRecordDateTimeToDoctor(connection,1);
 
+//            To see doctor's appointments
+//            Appointment.viewMyAppointmentDoctor(connection);
+//            Appointment.viewAppointmentForToday(connection);
             /*
             //create table for information about Doctors, appointment Date, Time (start, end), information is DateTime busy(1) or not(null,0) and information about Patient
             OperationFile.createTableAppointment(connection);

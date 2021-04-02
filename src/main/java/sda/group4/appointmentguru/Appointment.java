@@ -181,42 +181,60 @@ public class Appointment {
         Scanner scanner = new Scanner(System.in);
         int identification = scanner.nextInt();
 
-        String query = "SELECT * FROM appointment WHERE id_doctor_code = "+ identification +" AND date_time_busy = '1'";
+            String query = "SELECT visit_date, visit_time, patient_name, patient_surname " +
+                    "FROM appointment " +
+                    "INNER JOIN patient " +
+                    "ON appointment.patient_person_code = patient.patient_person_code " +
+                    "WHERE id_doctor_code = " + identification + " AND date_time_busy = '1'";
+//te vajadzētu ievietot loop, lai pārbaudītu vai  tāds id eksistē
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            System.out.printf("List of all appointments for doctor with id %s: \n", identification);
+            while (resultSet.next()) {
 
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(query);
+                //int id_doctor_code = resultSet.getInt("id_doctor_code");
+                Date visit_date = resultSet.getDate("visit_date");
+                Time visit_time = resultSet.getTime("visit_time");
+                //String patient_person_code = resultSet.getString("patient_person_code");
+                String patient_name = resultSet.getString("patient_name");
+                String patient_surname = resultSet.getString("patient_surname");
 
-        while (resultSet.next()) {
-            int id_doctor_name = resultSet.getInt("id_doctor_name");
-            Date visit_date = resultSet.getDate("visit_date");
-            Time visit_time = resultSet.getTime("visit_time");
-            String patient_person_code = resultSet.getString("patient_person_code");
+                System.out.printf("Date: %s, time: %s, patient: %s %s \n", visit_date, visit_time, patient_name, patient_surname);
+            }
+            statement.close();
 
-            System.out.printf("Doctor's id: %s, date: %s, time: %s, patient: %s \n", id_doctor_name, visit_date, visit_time, patient_person_code);
-        }
-        statement.close();
     }
 
     public static void viewAppointmentForToday(Connection connection) throws SQLException {
         LocalDate date = LocalDate.now();
         System.out.println("Current Date is " + date);
+        Scanner scanner = new Scanner(System.in);
+
+
+        System.out.println("Enter date using format yyyy-mm-dd");
 
         System.out.println("To see all appointments, enter doctor's id code: ");
-        Scanner scanner = new Scanner(System.in);
         int identification = scanner.nextInt();
 
-        String query = "SELECT * FROM appointment WHERE id_doctor_code = "+ identification +" AND visit_date = " + date +" AND date_time_busy = '1'";
+        String query = "SELECT visit_date, visit_time, patient_name, patient_surname " +
+                "FROM appointment " +
+                "INNER JOIN patient " +
+                "ON appointment.patient_person_code = patient.patient_person_code " +
+                "WHERE id_doctor_code = "+ identification +" AND visit_date = " + date +" AND date_time_busy = '1'";
 
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(query);
+
         System.out.printf("On %d you have the following appointments", date);
+
         while (resultSet.next()) {
-            int id_doctor_name = resultSet.getInt("id_doctor_name");
+            int id_doctor_code = resultSet.getInt("id_doctor_code");
             //Date visit_date = resultSet.getDate("visit_date");
             Time visit_time = resultSet.getTime("visit_time");
-            String patient_person_code = resultSet.getString("patient_person_code");
-
-            System.out.printf("Doctor's id: %s, time: %s, patient: %s \n", id_doctor_name, visit_time, patient_person_code);
+            //String patient_person_code = resultSet.getString("patient_person_code");
+            String patient_name = resultSet.getString("patient_name");
+            String patient_surname = resultSet.getString("patient_surname");
+            System.out.printf("time: %s, patient: %s %s \n",visit_time, patient_name, patient_surname);
         }
         statement.close();
     }

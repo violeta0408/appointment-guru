@@ -1,6 +1,7 @@
 package sda.group4.appointmentguru;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Doctors {
@@ -191,41 +192,60 @@ public class Doctors {
         int runApplication = 1;
         while (runApplication == 1) {
             //information about what is possible to do in our application
-            System.out.println("Please type (1-2) what would you like to do: ");
-            System.out.println("  1 - to see all appointment as a doctor;");
-            System.out.println("  2 - to see next appointment details as a doctor.");
+            System.out.println("Please type (1-4) what would you like to do: ");
+            System.out.println("  1 - to see all appointments as a doctor;");
+            System.out.println("  2 - to see all appointments for today as a doctor;");
+            System.out.println("  3 - to see all appointments for the selected day as a doctor;");
+            System.out.println("  4 - to see next appointment details as a doctor.");
 
             //enter choose what you will to do in our application
             Scanner scanner = new Scanner(System.in);
             System.out.println("Enter your choice: ");
             int selectedChoose = scanner.nextInt();
 
+            //System.out.println("In our hospital work the doctors from a list: ");
+            //Doctors.printAllRecordDoctor(connection);
+            System.out.println("Please enter yours id_doctor_code (from a list): ");
+            int selected_id_doctor_code = scanner.nextInt();
+            //te jāliek pārbaude vai tāds arsts ir- bet izstikt bez pārbaudes, tad saraksts tukss
+            //te vajadzētu ievietot loop, lai pārbaudītu vai  tāds id eksistē
+
             //operation after selectedChoose depend of choose - start process
             switch (selectedChoose) {
                 case 1:
                     //1 - to see all appointment as a doctor
-                    System.out.println("In our hospital work the doctors from a list: ");
-                    Doctors.printAllRecordDoctor(connection);
-                    System.out.println("Please enter yours id_doctor_code (from a list): ");
-                    int selected_id_doctor_code = scanner.nextInt();
-                    System.out.println("Yours all appointment as a doctor: ");
-                    Appointment.printAllRecordDateTimeToDoctor(connection, selected_id_doctor_code);
+                    System.out.println("Yours all appointments as a doctor: ");
+                    //Appointment.printAllRecordDateTimeToDoctor(connection, selected_id_doctor_code);
+                    Appointment.viewMyAppointmentDoctor(connection, selected_id_doctor_code);
                     break;
 
                 case 2:
-                    //2 - to see next appointment details as a doctor
-                    System.out.println("In our hospital work the doctors from a list: ");
-                    Doctors.printAllRecordDoctor(connection);
-                    System.out.println("Please enter yours id_doctor_code (from a list): ");
-                    int selected_id_doctor_code2 = scanner.nextInt();
+                    //2 - to see all appointments for today as a doctor
+                    Date dateToday=Date.valueOf(LocalDate.now());
+                    System.out.printf("Yours all appointments for today (%s) as a doctor: \n", dateToday);
+                    Appointment.viewAppointmentForOneDay(connection, selected_id_doctor_code, dateToday);
+                    break;
+
+                case 3:
+                    //3 - to see all appointments for the selected day as a doctor
+                    System.out.println("Please enter the date for which yuo would like to see yours appointments. Enter date using format yyyy-mm-dd");
+                    Date dateSelected=Date.valueOf(scanner.next());
+                    //?parbaude uz ievaditu datumu
+                    System.out.println("Yours all appointments for the selected day as a doctor: ");
+                    Appointment.viewAppointmentForOneDay(connection, selected_id_doctor_code, dateSelected);
+                    break;
+
+                case 4:
+                    //4 - to see next appointment details as a doctor
+                    //so vel jataisa
                     System.out.println("Yours next appointment as a doctor: ");
                     //te, jāsataisa, lai būtu next appointment
-                    //Appointment.printAllRecordDateTimeToDoctor(connection, selected_id_doctor_code2);
+                    //Appointment.viewMyAppointmentDoctor(connection, selected_id_doctor_code));
                     break;
 
                 default:
                     // all other choose: perform if and only if none of the above conditions are met
-                    System.out.println("Please enter a valid number - 1 or 2.");
+                    System.out.println("Please enter a valid number - 1, 2, 3 or 4.");
             }
             System.out.println("Will you do some more operation. If yes - press 1");
             runApplication = scanner.nextInt();

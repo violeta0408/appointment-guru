@@ -26,18 +26,19 @@ public class Main {
             Patients.createTablePatient(connection);
 
             // create table called Schedule
-            Appointment.createTableSchedule(connection);
+            //Melnraksti.createTableSchedule(connection);
+
 //            Appointment.printAllRecordDateTimeAvailable(connection,1);
 //            Appointment.printAllRecordDateTimeToDoctor(connection,1);
 
 //            To see doctor's appointments
-//            Appointment.viewMyAppointmentDoctor(connection);
+//            Appointment.viewMyAppointmentDoctor(connection,1);
 //            Appointment.viewAppointmentForToday(connection);
-//            Appointment.viewMyAppointmentPatient(connection);
+//            Appointment.viewMyAppointmentPatient(connection,"369859-15625");
 
             /*
             //create table for information about Doctors, appointment Date, Time (start, end), information is DateTime busy(1) or not(null,0) and information about Patient
-            OperationFile.createTableAppointment(connection);
+            Melnraksti.createTableAppointment(connection);
             */
 
             //to check - what is in DB about Doctors
@@ -47,7 +48,7 @@ public class Main {
             /*
             //to check - what is in DB about Appointment
             System.out.println("All records about Appointment in the database");
-            OperationFile.printAllRecordAppointment(connection);
+            Melnraksti.printAllRecordAppointment(connection);
             */
 
             System.out.println("Who are you: 1 - Patient; 2 - Doctor; 3 - Database administrator");
@@ -77,7 +78,7 @@ public class Main {
             /*
             //to check - what is in DB about Appointment
             System.out.println("All records about Appointment in the database");
-            OperationFile.printAllRecordAppointment(connection);
+            Melnraksti.printAllRecordAppointment(connection);
             */
 
             //delete table "doctor"

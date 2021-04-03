@@ -60,10 +60,10 @@ public class Main {
                     Patients.appointmentRequest(connection);
                     break;
                 case 2:
-                    Doctors.DoctorRequest(connection);
+                    Doctors.doctorRequest(connection);
                     break;
                 case 3:
-                    Administrator.updateInformation(connection);
+                    Administrator.administratorRequest(connection);
                     break;
                 default:
                     //all other choose - perform if and only if none of the above conditions are met

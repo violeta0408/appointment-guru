@@ -186,7 +186,7 @@ public class Doctors {
                 doctorIdToUpdate);
     }
 
-    public static void DoctorRequest(Connection connection) throws SQLException {
+    public static void doctorRequest(Connection connection) throws SQLException {
         //start with while - to can run application many times
         int runApplication = 1;
         while (runApplication == 1) {

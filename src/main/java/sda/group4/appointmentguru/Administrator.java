@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Administrator {
 
-    public static void updateInformation(Connection connection) throws SQLException {
+    public static void administratorRequest (Connection connection) throws SQLException {
         //start with while - to can run application many times
         int runApplication = 1;
         while (runApplication == 1) {

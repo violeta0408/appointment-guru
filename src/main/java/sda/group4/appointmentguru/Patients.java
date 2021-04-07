@@ -109,16 +109,25 @@ public class Patients {
                     //parbaudi par ievaditais selected_id_appointment ir no tiem, kas pieejams,
                     //!!! jo paslaik raksta ari pa virsu, kr aiznemts
 
-                    //System.out.println("Enter date (YYYY-MM-DD): ");
-                    //Date visit_date_toPutPatient = Date.valueOf(scanner.next());
-                    //System.out.println("Enter start time (HH:MM:SS) :");
-                    //Time visit_start_time_toPutPatient = Time.valueOf(scanner.next());
+                    if (Melnraksti.isAppointmentFromSelectedDoctor(connection,selected_id_appointment,selected_id_doctor_code)!=1){
+                        System.out.println("Yours selected id_appointment is not correct is for other doctor");
+                    }else {
+                        if (Melnraksti.isDateTimeBusyOrNot(connection, selected_id_appointment) == 1) {
+                            System.out.println("Yours selected id_appointment is busy");
+                        } else {
 
-                    //to get new information from console about patient
-                    Patients.insertPatientDetails(connection, patient_person_code);
+                            //System.out.println("Enter date (YYYY-MM-DD): ");
+                            //Date visit_date_toPutPatient = Date.valueOf(scanner.next());
+                            //System.out.println("Enter start time (HH:MM:SS) :");
+                            //Time visit_start_time_toPutPatient = Time.valueOf(scanner.next());
 
-                    //to update information in Appointment table
-                    Appointment.updateAppointmentsWithPatientBusy(connection, selected_id_appointment, patient_person_code);
+                            //to get new information from console about patient
+                            Patients.insertPatientDetails(connection, patient_person_code);
+
+                            //to update information in Appointment table
+                            Appointment.updateAppointmentsWithPatientBusy(connection, selected_id_appointment, patient_person_code);
+                        }
+                    }
                     break;
 
                 case 3:

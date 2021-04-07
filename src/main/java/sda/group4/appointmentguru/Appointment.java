@@ -45,7 +45,7 @@ public class Appointment {
         Scanner scanner1 = new Scanner(System.in);
         System.out.println("Please enter the doctor id");
         Integer id_doctor_code=scanner1.nextInt();
-        System.out.println("Please enter the date (yy:mm:dd) of the appointment");
+        System.out.println("Please enter the date (yyyy-mm-dd) of the appointment");
         Date visit_date = Date.valueOf(scanner1.next());
         System.out.println("Please enter the time (hh:mm:ss) of the appointment");
         Time visit_time = Time.valueOf(scanner1.next());

@@ -4,7 +4,6 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class Appointment {
-
     // to create table with Appointments
     public static void createTableAppointments(Connection connection) throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS appointment(" +
@@ -149,7 +148,6 @@ public class Appointment {
                 //String patient_person_code = resultSet.getString("patient_person_code");
                 String patient_name = resultSet.getString("patient_name");
                 String patient_surname = resultSet.getString("patient_surname");
-
                 System.out.printf("\t %-14s %-15s %-21s %-15s\n", visit_date, visit_time, patient_name, patient_surname);
             }
         }
@@ -175,9 +173,7 @@ public class Appointment {
                 //String patient_person_code = resultSet.getString("patient_person_code");
                 String patient_name = resultSet.getString("patient_name");
                 String patient_surname = resultSet.getString("patient_surname");
-
                 System.out.printf("    %-14s %-17s %-15s\n", visit_time, patient_name, patient_surname);
-
             }
         }
     }
@@ -212,10 +208,6 @@ public class Appointment {
                 String doctor_surname = resultSet.getString("doctor_surname");
                 Integer doctor_room_number = resultSet.getInt("doctor_room_number");
                 Double doctor_visit_price = resultSet.getDouble("doctor_visit_price");
-
-
-
-
                 System.out.printf(" \t %-20s %-25s %-25s %-20s %-18s %-23s %-21s %-20s\n", id_appointment, visit_date, visit_time, doctor_name, doctor_surname,
                         doctor_medical_speciality, doctor_room_number, doctor_visit_price);
                 System.out.printf("");
@@ -242,7 +234,6 @@ public class Appointment {
             return date_time_busy_result;
         }
     }
-
 
     // to get information is appointment for selected doctor or not (if is=1, if not=0)
     public static int isAppointmentFromSelectedDoctor(Connection connection, int id_appointment, int id_doctor_code_selected) throws SQLException {

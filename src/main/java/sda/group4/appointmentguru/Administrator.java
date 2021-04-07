@@ -24,8 +24,7 @@ public class Administrator {
 
             //operation after selectedChoose depend of choose - start process
             switch (selectedChoose) {
-                case 1:
-                    // 1 - to put new information about a doctor in database
+                case 1: // 1 - to put new information about a doctor in database
 
                     //to get all information about Doctors, who work in our hospital
                     System.out.println("All records in the database");
@@ -35,8 +34,7 @@ public class Administrator {
                     Doctors.insertDoctorDetails(connection);
                     break;
 
-                case 2:
-                    //2 - to make changes in information about a doctor in database
+                case 2: //2 - to make changes in information about a doctor in database
 
                     //to get all information about Doctors, who work in our hospital
                     System.out.println("All records in the database");
@@ -46,8 +44,7 @@ public class Administrator {
                     Doctors.updateDoctorDetails(connection);
                     break;
 
-                case 3:
-                    //3 - to delete information about a doctor in database
+                case 3: //3 - to delete information about a doctor in database
 
                     //to get all information about Doctors, who work in our hospital
                     System.out.println("All records in the database");
@@ -63,8 +60,7 @@ public class Administrator {
                     Doctors.printAllRecordDoctor(connection);
                     break;
 
-                case 4:
-                    // 4 - to create an available appointment records in the appointment table
+                case 4: // 4 - to create an available appointment records in the appointment table
                     Appointment.insertInfoIntoAppointment(connection);
                     break;
 

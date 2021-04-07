@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws SQLException {
 
+        //to get connection
         Connection connection = OperationFile.getConnection();
 
         if (connection == null) {
@@ -25,30 +26,34 @@ public class Main {
             //create table for information about Patient
             Patients.createTablePatient(connection);
 
-            System.out.println("To continue if you are a Patient, please press --> '1'\nIf you are a Doctor, please press --> '2' \nIf you are a Database administrator - press --> '3'!");
+            System.out.println("To continue if you are a Patient, please press --> '1'\n" +
+                    "If you are a Doctor, please press --> '2' \n" +
+                    "If you are a Database administrator - press --> '3'!");
             Scanner scanner = new Scanner(System.in);
             int role = scanner.nextInt();
 
             switch (role) {
-                case 1:
+                case 1: //Patient
                     Patients.patientRequest(connection);
                     break;
-                case 2:
+                case 2: //Doctor
                     Doctors.doctorRequest(connection);
                     break;
-                case 3:
+                case 3: //Database administrator
                     Administrator.administratorRequest(connection);
                     break;
-                default:
-                    //all other choose - perform if and only if none of the above conditions are met
-                    System.out.println("Unfortunately, you entered invalid number! \nIf you are a Patient, please press --> '1'\nIf you are a Doctor, please press --> '2' \nIf you are a Database administrator - press --> '3'! \nWe apologise for the inconvenience.");
+                default: //all other choose - perform if and only if none of the above conditions are met
+                    System.out.println("Unfortunately, you entered invalid number! \nI" +
+                            "f you are a Patient, please press --> '1'\n" +
+                            "If you are a Doctor, please press --> '2' \n" +
+                            "If you are a Database administrator - press --> '3'! \n" +
+                            "We apologise for the inconvenience.");
             }
-
             //delete table "doctor"; "patient"; "appointment":
             //OperationFile.deleteTable(connection, "doctor");
             //OperationFile.deleteTable(connection, "patient");
             //OperationFile.deleteTable(connection, "appointment");
-
         }
+
     }
 }

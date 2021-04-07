@@ -4,7 +4,8 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class Appointment {
-    // to create table with Appointments
+
+    //to create table with Appointments
     public static void createTableAppointments(Connection connection) throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS appointment(" +
                 "id_appointment INT AUTO_INCREMENT PRIMARY KEY," +
@@ -20,11 +21,11 @@ public class Appointment {
         }
     }
 
-    // to put information in the Appointment table
+    //to put information in the Appointment table
     public static void insertInfoIntoTableAppointment(Connection connection,
                                                       Integer id_doctor_code,
                                                       Date visit_date,
-                                                      Time visit_time ) throws SQLException {
+                                                      Time visit_time) throws SQLException {
         String sql = "INSERT INTO appointment (id_doctor_code, " +
                 "visit_date, " +
                 "visit_time) VALUES(?,?,?)";
@@ -39,22 +40,21 @@ public class Appointment {
         }
     }
 
-    //to create information for Appointment Table
+    //to enter information for Appointment Table and after put information in Appointment table
     public static void insertInfoIntoAppointment(Connection connection) throws SQLException {
         Scanner scanner1 = new Scanner(System.in);
         System.out.println("Please enter the doctor's ID code");
-        Integer id_doctor_code=scanner1.nextInt();
+        Integer id_doctor_code = scanner1.nextInt();
         System.out.println("Please enter the date (YYYY-MM-DD) of the appointment");
         Date visit_date = Date.valueOf(scanner1.next());
         System.out.println("Please enter the time (HH:MM:SS) of the appointment");
         Time visit_time = Time.valueOf(scanner1.next());
-        //to load information about the available appointment times in the Schedule
+        //to load information about the available appointment times in the Appointment tabula
         System.out.println("Information about the available appointment times is loaded in the database");
         Appointment.insertInfoIntoTableAppointment(connection, id_doctor_code, visit_date, visit_time); //to insert information in table
     }
 
-
-    // to update table Appointments with date_time_busy=1
+    //to update table Appointments with date_time_busy=1
     public static void updateAppointmentsWithPatientBusy(Connection connection, int id_appointment, String patient_person_code) throws SQLException {
         String sql = "UPDATE appointment SET date_time_busy=?, patient_person_code=? WHERE id_appointment=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -62,15 +62,15 @@ public class Appointment {
             statement.setString(2, patient_person_code);
             statement.setInt(3, id_appointment);
             int affectedRows = statement.executeUpdate();
-            if (affectedRows>0) {
+            if (affectedRows > 0) {
                 System.out.println("You have successfully booked your appointment!");
-            }else{
+            } else {
                 System.out.println("It was not possible to book your appointment!");
             }
         }
     }
 
-    // to update table Appointments with date_time_busy=0 if patient delete appointment
+    //to update table Appointments with date_time_busy=0 if patient delete appointment
     public static void updateAppointmentsWithNotBusy(Connection connection, String patient_person_code, int id_appointment) throws SQLException {
         String sql = "UPDATE appointment SET date_time_busy=?, patient_person_code=? WHERE patient_person_code=? AND id_appointment=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -79,15 +79,15 @@ public class Appointment {
             statement.setString(3, patient_person_code);
             statement.setInt(4, id_appointment);
             int affectedRows = statement.executeUpdate();
-            if (affectedRows>0) {
+            if (affectedRows > 0) {
                 System.out.println("Your appointment has been canceled!");
-            }else {
+            } else {
                 System.out.println("You entered incorrect appointment ID. ");
             }
         }
     }
 
-    // to update table Appointments with date_time_busy=0 if patient delete him salve from DB
+    //to update table Appointments with date_time_busy=0 if patient delete him salve from DB
     public static void updateAppointmentsWithNotBusyPatientDelete(Connection connection, String patient_person_code) throws SQLException {
         String sql = "UPDATE appointment SET date_time_busy=?, patient_person_code=? WHERE patient_person_code=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -95,15 +95,15 @@ public class Appointment {
             statement.setString(2, null);
             statement.setString(3, patient_person_code);
             int affectedRows = statement.executeUpdate();
-            if (affectedRows>0) {
+            if (affectedRows > 0) {
                 System.out.println("Information about your appointments have been deleted from our system.");
-            }else{
+            } else {
                 System.out.println("We don't have records about your appointments to delete.");
             }
         }
     }
 
-    // to get all records with appointment available for Patient - for Patient choice
+    //to get all records with appointment available for Patient - for Patient choice
     public static void printAllRecordDateTimeAvailable(Connection connection, int selected_id_doctor_code) throws SQLException {
         String sql = "SELECT appointment.id_appointment, " +
                 "doctor.doctor_medical_speciality, doctor.doctor_name, doctor.doctor_surname, " +
@@ -127,8 +127,7 @@ public class Appointment {
         }
     }
 
-    // to get all records with appointment for Doctor
-    // var skatities velidejas Melnraksti.printAllRecordDateTimeToDoctor
+    //to get all records with appointment for Doctor
     public static void viewMyAppointmentDoctor(Connection connection, int id_doctor_code) throws SQLException {
         String query = "SELECT visit_date, visit_time, patient_name, patient_surname " +
                 "FROM appointment " +
@@ -153,8 +152,8 @@ public class Appointment {
         }
     }
 
-    // to get all records with appointment for Doctor for one day - today or selected day
-    public static void viewAppointmentForOneDay(Connection connection, int id_doctor_code, Date dateDay) throws SQLException {
+    //to get all records with appointment for Doctor for one day - today or selected day
+    public static void viewAppointmentForOneDayDoctor(Connection connection, int id_doctor_code, Date dateDay) throws SQLException {
         String query = "SELECT visit_date, visit_time, patient_name, patient_surname " +
                 "FROM appointment " +
                 "INNER JOIN patient " +
@@ -178,7 +177,7 @@ public class Appointment {
         }
     }
 
-    // to get all records with appointment Patient
+    //to get all records with appointment Patient
     // vel japadarbojas ar:
     //  neizdevās arī sakārtot hronoloģiski, mainīju order by mainīgo secību, bet neizdevās
     public static void viewMyAppointmentPatient(Connection connection, String patient_person_code) throws SQLException {
@@ -216,7 +215,7 @@ public class Appointment {
         }
     }
 
-    // to get information is date_time_busy or not (if busy=1; if not =0)
+    //to get information is date_time_busy or not (if busy=1; if not =0)
     public static int isDateTimeBusyOrNot(Connection connection, int id_appointment) throws SQLException {
         String sql = "SELECT date_time_busy from appointment where id_appointment=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -235,15 +234,15 @@ public class Appointment {
         }
     }
 
-    // to get information is appointment for selected doctor or not (if is=1, if not=0)
-    public static int isAppointmentFromSelectedDoctor(Connection connection, int id_appointment, int id_doctor_code_selected) throws SQLException {
+    //to get information is appointment for selected doctor or not (if is=1, if not=0)
+    public static int isAppointmentForSelectedDoctor(Connection connection, int id_appointment, int id_doctor_code_selected) throws SQLException {
         String sql = "SELECT id_doctor_code from appointment where id_appointment=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id_appointment);
             ResultSet resultSet = statement.executeQuery();
             int id_doctor_code_result = 0;
             while (resultSet.next()) {
-                Integer id_doctor_code= resultSet.getInt("id_doctor_code");
+                Integer id_doctor_code = resultSet.getInt("id_doctor_code");
                 if (id_doctor_code == id_doctor_code_selected) {
                     id_doctor_code_result = 1;
                 } else {

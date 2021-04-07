@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Doctors {
 
-    // to create table with Doctors, who work in our hospital
+    //to create table with Doctors, who work in our hospital
     public static void createTableDoctor(Connection connection) throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS doctor(" +
                 "id_doctor_code INT AUTO_INCREMENT PRIMARY KEY," +
@@ -24,7 +24,7 @@ public class Doctors {
         }
     }
 
-    // to put information in Doctor table, if start work new Doctor
+    //to put information in Doctor table, if start work new Doctor
     public static void insertIntoDoctorTable(Connection connection,
                                              String doctor_medical_speciality,
                                              String doctor_name,
@@ -51,7 +51,7 @@ public class Doctors {
         }
     }
 
-    // to update information in Doctor table, if it was some mistake before
+    //to update information in Doctor table, if it was some mistake before
     public static void updateRecordDoctor(Connection connection,
                                           String doctor_medical_speciality,
                                           String doctor_name,
@@ -74,15 +74,16 @@ public class Doctors {
             statement.setTime(6, doctor_work_end_time);
             statement.setDouble(7, doctor_visit_price);
             statement.setInt(8, id_doctor_code);
-
             int affectedRows = statement.executeUpdate();
             if (affectedRows > 0) {
                 System.out.printf("Record about Doctor with ID %s was successfully updated \n", id_doctor_code);
+            } else {
+                System.out.println("We don't have information about this Doctor in our system.");
             }
         }
     }
 
-    // to delete information in Doctor table, if Doctor doesn't work more
+    //to delete information in Doctor table, if Doctor doesn't work more
     public static void deleteRecordDoctor(Connection connection, int id_doctor_code) throws SQLException {
         String sql = "DELETE from doctor where id_doctor_code=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -90,11 +91,13 @@ public class Doctors {
             int affectedRows = statement.executeUpdate();
             if (affectedRows > 0) {
                 System.out.printf("Record about Doctor with ID %s was successfully deleted \n", id_doctor_code);
+            } else {
+                System.out.println("This Doctor isn't in our system.");
             }
         }
     }
 
-    // to get all records about Doctors, who work in our hospital
+    //to get all records about Doctors, who work in our hospital
     public static void printAllRecordDoctor(Connection connection) throws SQLException {
         String sql = "SELECT * from doctor order by doctor_medical_speciality";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -113,13 +116,12 @@ public class Doctors {
                 Time doctor_work_start_time = resultSet.getTime("doctor_work_start_time");
                 Time doctor_work_end_time = resultSet.getTime("doctor_work_end_time");
                 Double doctor_visit_price = resultSet.getDouble("doctor_visit_price");
-
                 System.out.printf(" \t %-15s %-28s %-15s %-23s %-20s %-30s %-30s %-20s\n", id_doctor_code, doctor_medical_speciality, doctor_name, doctor_surname, doctor_room_number, doctor_work_start_time, doctor_work_end_time, doctor_visit_price);
             }
         }
     }
 
-
+    //to enter information about Doctor, and after put information in Doctor table
     public static void insertDoctorDetails(Connection connection) throws SQLException {
         //to get information from console about doctor
         Scanner scanner1 = new Scanner(System.in);
@@ -146,12 +148,13 @@ public class Doctors {
                 doctor_room_number,
                 doctor_work_start_time,
                 doctor_work_end_time,
-                doctor_visit_price); //insert information in table
-
+                doctor_visit_price);
     }
 
+
+    //to select, enter and update information in Doctor table, if it was some mistake before
     public static void updateDoctorDetails(Connection connection) throws SQLException {                    //te var būt izvēle par to, kuru informāciju vadisim pa jaunu
-        //to update information in Doctor table, if it was some mistake before
+        //to get information about updating records
         Scanner scanner = new Scanner(System.in);
         System.out.println("To update records about a doctor, please enter doctor's ID code: ");
         int doctorIdToUpdate = scanner.nextInt();
@@ -187,7 +190,15 @@ public class Doctors {
                 doctorIdToUpdate);
     }
 
+
+    //
     public static void doctorRequest(Connection connection) throws SQLException {
+        //to identify doctor
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please enter your ID code");
+        int selected_id_doctor_code = scanner.nextInt();
+        //te jāliek pārbaude vai tāds arsts ir- bet izstikt bez pārbaudes, tad saraksts tukss
+
         //start with while - to can run application many times
         int runApplication = 1;
         while (runApplication == 1) {
@@ -199,52 +210,38 @@ public class Doctors {
             System.out.println("  4 - to see next appointment details");
 
             //enter choose what you will to do in our application
-            Scanner scanner = new Scanner(System.in);
             System.out.println("Enter your choice: ");
             int selectedChoose = scanner.nextInt();
 
-            //System.out.println("In our hospital work the doctors from a list: ");
-            //Doctors.printAllRecordDoctor(connection);
-            System.out.println("Please enter your ID code");
-            int selected_id_doctor_code = scanner.nextInt();
-            //te jāliek pārbaude vai tāds arsts ir- bet izstikt bez pārbaudes, tad saraksts tukss
-            //te vajadzētu ievietot loop, lai pārbaudītu vai  tāds id eksistē
-
             //operation after selectedChoose depend of choose - start process
             switch (selectedChoose) {
-                case 1:
-                    //1 - to see all appointment as a doctor
+                case 1: //1 - to see all appointment as a doctor
                     System.out.println("All your appointments:");
-                    //Appointment.printAllRecordDateTimeToDoctor(connection, selected_id_doctor_code);
                     Appointment.viewMyAppointmentDoctor(connection, selected_id_doctor_code);
                     break;
 
-                case 2:
-                    //2 - to see all appointments for today as a doctor
+                case 2: //2 - to see all appointments for today as a doctor
                     Date dateToday = Date.valueOf(LocalDate.now());
                     System.out.printf("All your appointments for today (%s): \n", dateToday);
-                    Appointment.viewAppointmentForOneDay(connection, selected_id_doctor_code, dateToday);
+                    Appointment.viewAppointmentForOneDayDoctor(connection, selected_id_doctor_code, dateToday);
                     break;
 
-                case 3:
-                    //3 - to see all appointments for the selected day as a doctor
+                case 3: //3 - to see all appointments for the selected day as a doctor
                     System.out.println("Please enter the date for which you would like to see your appointments. Enter the date using format YYYY-MM-DD");
                     Date dateSelected = Date.valueOf(scanner.next());
                     //?parbaude uz ievaditu datumu
                     System.out.println("All your appointments for the selected day: ");
-                    Appointment.viewAppointmentForOneDay(connection, selected_id_doctor_code, dateSelected);
+                    Appointment.viewAppointmentForOneDayDoctor(connection, selected_id_doctor_code, dateSelected);
                     break;
 
-                case 4:
-                    //4 - to see next appointment details as a doctor
-                    //so vel jataisa
+                case 4: //4 - to see next appointment details as a doctor
+                    //!!!so vel jataisa
                     System.out.println("Your next appointment is: ");
                     //te, jāsataisa, lai būtu next appointment
-                    //Appointment.viewMyAppointmentDoctor(connection, selected_id_doctor_code));
+                    //Appointment.viewMyNextAppointmentDoctor(connection, selected_id_doctor_code));
                     break;
 
-                default:
-                    // all other choose: perform if and only if none of the above conditions are met
+                default: // all other choose: perform if and only if none of the above conditions are met
                     System.out.println("Please enter a valid number depending on what you would like to do - 1, 2, 3 or 4.");
             }
             System.out.println("If you would like to do more operations - press 1");

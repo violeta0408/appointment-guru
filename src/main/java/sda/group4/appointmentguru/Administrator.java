@@ -6,7 +6,8 @@ import java.util.Scanner;
 
 public class Administrator {
 
-    public static void administratorRequest (Connection connection) throws SQLException {
+    //
+    public static void administratorRequest(Connection connection) throws SQLException {
         //start with while - to can run application many times
         int runApplication = 1;
         while (runApplication == 1) {
@@ -17,14 +18,14 @@ public class Administrator {
             System.out.println("3 - to delete information about a doctor in database;");
             System.out.println("4 - to create a record in the database about available appointment time.");
 
-            // choose what you will do in our application
+            //choose what you will do in our application
             Scanner scanner = new Scanner(System.in);
             System.out.println("Enter your choice: ");
             int selectedChoose = scanner.nextInt();
 
             //operation after selectedChoose depend of choose - start process
             switch (selectedChoose) {
-                case 1: // 1 - to put new information about a doctor in database
+                case 1: //1 - to put new information about a doctor in database
 
                     //to get all information about Doctors, who work in our hospital
                     System.out.println("All records in the database");
@@ -60,12 +61,11 @@ public class Administrator {
                     Doctors.printAllRecordDoctor(connection);
                     break;
 
-                case 4: // 4 - to create an available appointment records in the appointment table
+                case 4: //4 - to create an available appointment records in the appointment table
                     Appointment.insertInfoIntoAppointment(connection);
                     break;
 
-                default:
-                    //all other choose - perform if and only if none of the above conditions are met
+                default: //all other choose - perform if and only if none of the above conditions are met
                     System.out.println("Please enter a valid number - 1, 2, 3 or 4.");
             }
             System.out.println("If you would like to do more operations - press 1");

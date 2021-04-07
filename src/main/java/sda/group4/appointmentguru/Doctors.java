@@ -99,9 +99,11 @@ public class Doctors {
         String sql = "SELECT * from doctor order by doctor_medical_speciality";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
-            System.out.println("id_doctor_code  |  doctor_medical_speciality  |  "
-                    + "doctor_name  |  doctor_surname  |  doctor_room_number  |  "
-                    + "doctor_work_start_time  |  doctor_work_end_time  |  doctor_visit_price");
+            System.out.print("\033[4;1;255m");
+            System.out.println("id doctor code  |  doctor medical speciality  |  "
+                    + "doctor name  |  doctor surname  |  doctor room number  |  "
+                    + "doctor work start time  |  doctor work end time  |  doctor visit price");
+            System.out.print("\033[0m");
             while (resultSet.next()) {
                 Integer id_doctor_code = resultSet.getInt("id_doctor_code");
                 String doctor_medical_speciality = resultSet.getString("doctor_medical_speciality");
@@ -111,10 +113,9 @@ public class Doctors {
                 Time doctor_work_start_time = resultSet.getTime("doctor_work_start_time");
                 Time doctor_work_end_time = resultSet.getTime("doctor_work_end_time");
                 Double doctor_visit_price = resultSet.getDouble("doctor_visit_price");
-
-                System.out.println(id_doctor_code + " | " + doctor_medical_speciality + " | "
-                        + doctor_name + " | " + doctor_surname + " | " + doctor_room_number + " | "
-                        + doctor_work_start_time + " | " + doctor_work_end_time + " | " + doctor_visit_price);
+//
+                System.out.printf(" \t %-15s %-28s %-15s %-23s %-20s %-28s %-23s %-20s\n", id_doctor_code, doctor_medical_speciality, doctor_name, doctor_surname, doctor_room_number, doctor_work_start_time, doctor_work_end_time, doctor_visit_price);
+//                System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             }
         }
     }
@@ -221,7 +222,7 @@ public class Doctors {
 
                 case 2:
                     //2 - to see all appointments for today as a doctor
-                    Date dateToday=Date.valueOf(LocalDate.now());
+                    Date dateToday = Date.valueOf(LocalDate.now());
                     System.out.printf("Yours all appointments for today (%s) as a doctor: \n", dateToday);
                     Appointment.viewAppointmentForOneDay(connection, selected_id_doctor_code, dateToday);
                     break;
@@ -229,7 +230,7 @@ public class Doctors {
                 case 3:
                     //3 - to see all appointments for the selected day as a doctor
                     System.out.println("Please enter the date for which yuo would like to see yours appointments. Enter date using format yyyy-mm-dd");
-                    Date dateSelected=Date.valueOf(scanner.next());
+                    Date dateSelected = Date.valueOf(scanner.next());
                     //?parbaude uz ievaditu datumu
                     System.out.println("Yours all appointments for the selected day as a doctor: ");
                     Appointment.viewAppointmentForOneDay(connection, selected_id_doctor_code, dateSelected);

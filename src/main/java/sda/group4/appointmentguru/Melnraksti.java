@@ -6,7 +6,6 @@ import java.util.Scanner;
 public class Melnraksti {
 
 
-
     // to create table for information about Doctor, appointment Date, Time (start, end), information is DateTime busy(1) or not(null,0) and information about Patient
     public static void createTableAppointment(Connection connection) throws SQLException {
         String sql = "CREATE TABLE IF NOT EXISTS appointment(" +
@@ -128,8 +127,6 @@ public class Melnraksti {
     }
 
 
-
-
     // to delete information in Appointment table, if Doctor doesn't work more
     public static void deleteRecordAppointment(Connection connection, int id_doctor_code) throws SQLException {
         String sql = "DELETE from appointment where id_doctor_code=?";
@@ -245,7 +242,43 @@ public class Melnraksti {
         Melnraksti.insertInfoIntoTableSchedule(connection, doctor_name, doctor_surname, doctor_medical_speciality, visit_date, visit_time, date_time_busy, patient_person_code); //to insert information in table
     }
 
+    // to get information is date_time_busy or not (if busy=1; if not =0)
+    public static int isDateTimeBusyOrNot(Connection connection, int id_appointment) throws SQLException {
+        String sql = "SELECT date_time_busy from appointment where id_appointment=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id_appointment);
+            ResultSet resultSet = statement.executeQuery();
+            int date_time_busy_result = 0;
+            while (resultSet.next()) {
+                Integer date_time_busy = resultSet.getInt("date_time_busy");
+                if (date_time_busy == 1) {
+                    date_time_busy_result = 1;
+                } else {
+                    date_time_busy_result = date_time_busy_result;
+                }
+            }
+            return date_time_busy_result;
+        }
+    }
 
 
+    // to get information is appointment for selected doctor or not (if is=1, if not=0)
+    public static int isAppointmentFromSelectedDoctor(Connection connection, int id_appointment, int id_doctor_code_selected) throws SQLException {
+        String sql = "SELECT id_doctor_code from appointment where id_appointment=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id_appointment);
+            ResultSet resultSet = statement.executeQuery();
+            int id_doctor_code_result = 0;
+            while (resultSet.next()) {
+                Integer id_doctor_code= resultSet.getInt("id_doctor_code");
+                if (id_doctor_code == id_doctor_code_selected) {
+                    id_doctor_code_result = 1;
+                } else {
+                    id_doctor_code_result = id_doctor_code_result;
+                }
+            }
+            return id_doctor_code_result;
+        }
+    }
 
 }

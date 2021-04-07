@@ -12,7 +12,7 @@ public class Appointment {
                 "id_doctor_code INT," +
                 "visit_date DATE," +
                 "visit_time TIME," +
-                "date_time_busy INT," +
+                "date_time_busy INT DEFAULT 0," +
                 "patient_person_code VARCHAR(200)" +
                 ")";
         //Try with resources
@@ -62,25 +62,28 @@ public class Appointment {
             statement.setInt(1, 1);
             statement.setString(2, patient_person_code);
             statement.setInt(3, id_appointment);
-            boolean isSuccessful = statement.execute();
-            if (isSuccessful) {
-                System.out.println("Record about Appointment is updated");
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows>0) {
+                System.out.println("You have successfully booked your appointment!");
+            }else{
+                System.out.println("It was not possible to book your appointment!");
             }
         }
     }
 
     // to update table Appointments with date_time_busy=0 if patient delete appointment
-    public static void updateAppointmentsWithNotBusy(Connection connection, String patient_person_code, Date visit_date, Time visit_time) throws SQLException {
-        String sql = "UPDATE appointment SET date_time_busy=?, patient_person_code=? WHERE patient_person_code=? AND visit_date=? AND visit_time=?";
+    public static void updateAppointmentsWithNotBusy(Connection connection, String patient_person_code, int id_appointment) throws SQLException {
+        String sql = "UPDATE appointment SET date_time_busy=?, patient_person_code=? WHERE patient_person_code=? AND id_appointment=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, 0);
             statement.setString(2, null);
             statement.setString(3, patient_person_code);
-            statement.setDate(4, visit_date);
-            statement.setTime(5, visit_time);
-            boolean isSuccessful = statement.execute();
-            if (isSuccessful) {
-                System.out.println("Record about Appointment is updated with - 'not busy'");
+            statement.setInt(4, id_appointment);
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows>0) {
+                System.out.println("Your appointment has been canceled!");
+            }else {
+                System.out.println("You entered incorrect appointment ID. ");
             }
         }
     }
@@ -92,9 +95,11 @@ public class Appointment {
             statement.setInt(1, 0);
             statement.setString(2, null);
             statement.setString(3, patient_person_code);
-            boolean isSuccessful = statement.execute();
-            if (isSuccessful) {
-                System.out.println("Record about Appointment is updated with - 'not busy'");
+            int affectedRows = statement.executeUpdate();
+            if (affectedRows>0) {
+                System.out.println("Information about your appointments have been deleted from our system.");
+            }else{
+                System.out.println("We don't have records about your appointments to delete.");
             }
         }
     }
@@ -216,6 +221,45 @@ public class Appointment {
                 System.out.printf("");
 
             }
+        }
+    }
+
+    // to get information is date_time_busy or not (if busy=1; if not =0)
+    public static int isDateTimeBusyOrNot(Connection connection, int id_appointment) throws SQLException {
+        String sql = "SELECT date_time_busy from appointment where id_appointment=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id_appointment);
+            ResultSet resultSet = statement.executeQuery();
+            int date_time_busy_result = 0;
+            while (resultSet.next()) {
+                Integer date_time_busy = resultSet.getInt("date_time_busy");
+                if (date_time_busy == 1) {
+                    date_time_busy_result = 1;
+                } else {
+                    date_time_busy_result = date_time_busy_result;
+                }
+            }
+            return date_time_busy_result;
+        }
+    }
+
+
+    // to get information is appointment for selected doctor or not (if is=1, if not=0)
+    public static int isAppointmentFromSelectedDoctor(Connection connection, int id_appointment, int id_doctor_code_selected) throws SQLException {
+        String sql = "SELECT id_doctor_code from appointment where id_appointment=?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id_appointment);
+            ResultSet resultSet = statement.executeQuery();
+            int id_doctor_code_result = 0;
+            while (resultSet.next()) {
+                Integer id_doctor_code= resultSet.getInt("id_doctor_code");
+                if (id_doctor_code == id_doctor_code_selected) {
+                    id_doctor_code_result = 1;
+                } else {
+                    id_doctor_code_result = id_doctor_code_result;
+                }
+            }
+            return id_doctor_code_result;
         }
     }
 

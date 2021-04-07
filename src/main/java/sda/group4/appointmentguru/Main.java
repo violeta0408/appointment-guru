@@ -25,39 +25,13 @@ public class Main {
             //create table for information about Patient
             Patients.createTablePatient(connection);
 
-            // create table called Schedule
-            //Melnraksti.createTableSchedule(connection);
-
-//            Appointment.printAllRecordDateTimeAvailable(connection,1);
-//            Appointment.printAllRecordDateTimeToDoctor(connection,1);
-
-//            To see doctor's appointments
-//            Appointment.viewMyAppointmentDoctor(connection,1);
-//            Appointment.viewAppointmentForToday(connection);
-//            Appointment.viewMyAppointmentPatient(connection,"369859-15625");
-
-            /*
-            //create table for information about Doctors, appointment Date, Time (start, end), information is DateTime busy(1) or not(null,0) and information about Patient
-            Melnraksti.createTableAppointment(connection);
-            */
-
-            //to check - what is in DB about Doctors
-            //System.out.println("All records about Doctors in the database");
-            //Doctors.printAllRecordDoctor(connection);
-
-            /*
-            //to check - what is in DB about Appointment
-            System.out.println("All records about Appointment in the database");
-            Melnraksti.printAllRecordAppointment(connection);
-            */
-
             System.out.println("To continue if you are a Patient, please press --> '1'\nIf you are a Doctor, please press --> '2' \nIf you are a Database administrator - press --> '3'!");
             Scanner scanner = new Scanner(System.in);
             int role = scanner.nextInt();
 
             switch (role) {
                 case 1:
-                    Patients.appointmentRequest(connection);
+                    Patients.patientRequest(connection);
                     break;
                 case 2:
                     Doctors.doctorRequest(connection);
@@ -70,27 +44,11 @@ public class Main {
                     System.out.println("Unfortunately, you entered invalid number! \nIf you are a Patient, please press --> '1'\nIf you are a Doctor, please press --> '2' \nIf you are a Database administrator - press --> '3'! \nWe apologise for the inconvenience.");
             }
 
-            //to check - what is in DB about Doctor
-            //System.out.println("All records about Doctor in the database");
-            //Doctors.printAllRecordDoctor(connection);
-
-            /*
-            //to check - what is in DB about Appointment
-            System.out.println("All records about Appointment in the database");
-            Melnraksti.printAllRecordAppointment(connection);
-            */
-
-            //delete table "doctor"
+            //delete table "doctor"; "patient"; "appointment":
             //OperationFile.deleteTable(connection, "doctor");
-
-            //delete table "patient"
             //OperationFile.deleteTable(connection, "patient");
-
-            //delete table "appointment"
             //OperationFile.deleteTable(connection, "appointment");
 
-            //delete table "schedule"
-            //OperationFile.deleteTable(connection, "schedule");
         }
     }
 }

@@ -46,7 +46,7 @@ public class Patients {
             statement.setString(1, patient_person_code);
             int affectedRows = statement.executeUpdate();
             if (affectedRows > 0) {
-                System.out.printf("Record about Patient with id %s was successfully deleted \n", patient_person_code);
+                System.out.printf("Record about Patient with ID %s was successfully deleted \n", patient_person_code);
             }
         }
     }
@@ -55,11 +55,11 @@ public class Patients {
         Scanner scanner1 = new Scanner(System.in);
         //System.out.println("Enter patient person code: ");
         //String patient_person_code = scanner1.nextLine();
-        System.out.println("Enter patient name: ");
+        System.out.println("Enter patient's name: ");
         String patient_name = scanner1.nextLine();
-        System.out.println("Enter patient surname: ");
+        System.out.println("Enter patient's surname: ");
         String patient_surname = scanner1.nextLine();
-        System.out.println("Enter patient phone number: ");
+        System.out.println("Enter patient's phone number: ");
         String patient_phone_number = scanner1.nextLine();
         Patients.insertIntoPatientTable(connection, patient_person_code, patient_name, patient_surname, patient_phone_number);
     }
@@ -69,12 +69,12 @@ public class Patients {
         int runApplication = 1;
         while (runApplication == 1) {
             //information about what is possible to do in our application
-            System.out.println("Please type (1-4) what would you like to do: ");
-            System.out.println("  1 - to see all yours reserved appointments");
+            System.out.println("What would you like to do? Please type (1-4): ");
+            System.out.println("  1 - to see the details of all your appointments");
             // japadoma vai tikai tie, kas nakotne (1) ;? vai pavisu laiku visi - ari pagatne (5)
             System.out.println("  2 - to apply for an appointment;");
-            System.out.println("  3 - to delete an appointment;");
-            System.out.println("  4 - to delete person from database.");
+            System.out.println("  3 - to cancel an appointment;");
+            System.out.println("  4 - to delete your data from the system.");
             //? 5 - to history of all yours appointments
 
             //enter choose what you will to do in our application
@@ -94,26 +94,26 @@ public class Patients {
 
                 case 2:
                     //2 - to apply visit to a doctor
-                    System.out.println("You can apply to the doctor from a list: ");
+                    System.out.println("You can book an appointment by choosing a doctor and doctor's speciality from the list below: ");
                     Doctors.printAllRecordDoctor(connection);
                     //var darboties- mainit, tad veidot metodi. lai butu specialitate
-                    System.out.println("To apply please enter id_doctor_code from a list: ");
+                    System.out.println("To book an appointment please enter the doctor's ID code from a list: ");
                     int selected_id_doctor_code = scanner.nextInt();
                     //parbaude vai ir no saraksta
-                    System.out.println("You can apply to visit from a list: ");
+                    System.out.println("Please choose the appointment time from the list below: ");
                     //japadarbojas pie zemak minetas metodes, lai korektak izdot informciju
                     Appointment.printAllRecordDateTimeAvailable(connection, selected_id_doctor_code);
-                    System.out.println("To apply please enter id_appointment from a list: ");
+                    System.out.println("To book an appointment, please enter the ID code of the appointment from a list: ");
                     int selected_id_appointment = scanner.nextInt();
                     //te vajadzētu ievietot loop, lai pārbaudītu vai  tāds id eksistē
                     //parbaudi par ievaditais selected_id_appointment ir no tiem, kas pieejams,
                     //!!! jo paslaik raksta ari pa virsu, kr aiznemts
 
                     if (Melnraksti.isAppointmentFromSelectedDoctor(connection,selected_id_appointment,selected_id_doctor_code)!=1){
-                        System.out.println("Yours selected id_appointment is not correct is for other doctor");
+                        System.out.println("Sadly, in our system doesn't exist any appointment with this ID. Please type the ID code of the appointment from the list. ");
                     }else {
                         if (Melnraksti.isDateTimeBusyOrNot(connection, selected_id_appointment) == 1) {
-                            System.out.println("Yours selected id_appointment is busy");
+                            System.out.println("Sadly, at the moment there is no available appointment with this ID. Please make sure to enter ID code from the list of available appointment times. Please type the ID code of the available appointment.");
                         } else {
 
                             //System.out.println("Enter date (YYYY-MM-DD): ");
@@ -126,6 +126,8 @@ public class Patients {
 
                             //to update information in Appointment table
                             Appointment.updateAppointmentsWithPatientBusy(connection, selected_id_appointment, patient_person_code);
+                            System.out.println("Thank you! You have successfully booked an appointment!");
+
                         }
                     }
                     break;
@@ -157,9 +159,9 @@ public class Patients {
 
                 default:
                     // all other choose: perform if and only if none of the above conditions are met
-                    System.out.println("Please enter a valid number - 1, 2, 3 or 4.");
+                    System.out.println("Please enter a valid number depending on what you would like to do - 1, 2, 3 or 4.");
             }
-            System.out.println("Will you do some more operation. If yes - press 1");
+            System.out.println("If you would like to do more operations - press 1");
             runApplication = scanner.nextInt();
         }
     }

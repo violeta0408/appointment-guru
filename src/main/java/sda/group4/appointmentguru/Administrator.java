@@ -11,11 +11,11 @@ public class Administrator {
         int runApplication = 1;
         while (runApplication == 1) {
             //information about what is possible to do in our application
-            System.out.println("Please type (1-4) what would you like to do: ");
-            System.out.println("1 - to put a new information about a doctor in the database;");
+            System.out.println("What would you like to do? Please type (1-4):");
+            System.out.println("1 - to insert a new information about a doctor in the database;");
             System.out.println("2 - to make changes in the information about a doctor in the database;");
             System.out.println("3 - to delete information about a doctor in database;");
-            System.out.println("4 - to create an available appointment records in the appointment table.");
+            System.out.println("4 - to create a record in the database about available appointment time.");
 
             // choose what you will do in our application
             Scanner scanner = new Scanner(System.in);
@@ -54,7 +54,7 @@ public class Administrator {
                     Doctors.printAllRecordDoctor(connection);
 
                     //to delete information from Doctor and Appointment table, if Doctor doesn't work more
-                    System.out.println("Please enter doctor id code, to delete records about doctor: ");
+                    System.out.println("To delete records about the doctor, please enter doctor's ID code");
                     int idDoctorCodeToDelete = scanner.nextInt();
                     Doctors.deleteRecordDoctor(connection, idDoctorCodeToDelete);
 
@@ -72,7 +72,7 @@ public class Administrator {
                     //all other choose - perform if and only if none of the above conditions are met
                     System.out.println("Please enter a valid number - 1, 2, 3 or 4.");
             }
-            System.out.println("Will you do some more operation. If yes - press 1");
+            System.out.println("If you would like to do more operations - press 1");
             runApplication = scanner.nextInt();
         }
     }

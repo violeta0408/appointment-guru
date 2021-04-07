@@ -134,7 +134,7 @@ public class Melnraksti {
             statement.setInt(1, id_doctor_code);
             int affectedRows = statement.executeUpdate();
             if (affectedRows > 0) {
-                System.out.printf("Record about Doctor with id %s was successfully deleted \n", id_doctor_code);
+                System.out.printf("Record about Doctor with ID %s has been successfully deleted \n", id_doctor_code);
             }
         }
     }
@@ -228,9 +228,9 @@ public class Melnraksti {
         String doctor_surname = scanner1.nextLine();
         System.out.println("Please enter doctor's speciality");
         String doctor_medical_speciality = scanner1.nextLine();
-        System.out.println("Please enter the date (yy:mm:dd) of the appointment");
+        System.out.println("Please enter the date (YYYY:MM:DD) of the appointment");
         Date visit_date = Date.valueOf(scanner1.next());
-        System.out.println("Please enter the time (hh:mm:ss) of the appointment");
+        System.out.println("Please enter the time (HH:MM:SS) of the appointment");
         Time visit_time = Time.valueOf(scanner1.next());
         System.out.println("If the time is available, please enter '0', if busy - '1'.");
         Integer date_time_busy = scanner1.nextInt();

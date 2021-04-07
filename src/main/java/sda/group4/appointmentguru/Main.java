@@ -51,9 +51,8 @@ public class Main {
             Melnraksti.printAllRecordAppointment(connection);
             */
 
-            System.out.println("Who are you: 1 - Patient; 2 - Doctor; 3 - Database administrator");
+            System.out.println("To continue if you are a Patient, please press --> '1'\nIf you are a Doctor, please press --> '2' \nIf you are a Database administrator - press --> '3'!");
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Enter your choice: ");
             int role = scanner.nextInt();
 
             switch (role) {
@@ -68,7 +67,7 @@ public class Main {
                     break;
                 default:
                     //all other choose - perform if and only if none of the above conditions are met
-                    System.out.println("Please enter a valid number - 1, 2 or 3.");
+                    System.out.println("Unfortunately, you entered invalid number! \nIf you are a Patient, please press --> '1'\nIf you are a Doctor, please press --> '2' \nIf you are a Database administrator - press --> '3'! \nWe apologise for the inconvenience.");
             }
 
             //to check - what is in DB about Doctor

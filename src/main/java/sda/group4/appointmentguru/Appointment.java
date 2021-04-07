@@ -43,11 +43,11 @@ public class Appointment {
     //to create information for Appointment Table
     public static void insertInfoIntoAppointment(Connection connection) throws SQLException {
         Scanner scanner1 = new Scanner(System.in);
-        System.out.println("Please enter the doctor id");
+        System.out.println("Please enter the doctor's ID code");
         Integer id_doctor_code=scanner1.nextInt();
-        System.out.println("Please enter the date (yyyy-mm-dd) of the appointment");
+        System.out.println("Please enter the date (YYYY-MM-DD) of the appointment");
         Date visit_date = Date.valueOf(scanner1.next());
-        System.out.println("Please enter the time (hh:mm:ss) of the appointment");
+        System.out.println("Please enter the time (HH:MM:SS) of the appointment");
         Time visit_time = Time.valueOf(scanner1.next());
         //to load information about the available appointment times in the Schedule
         System.out.println("Information about the available appointment times is loaded in the database");
@@ -80,7 +80,7 @@ public class Appointment {
             statement.setTime(5, visit_time);
             boolean isSuccessful = statement.execute();
             if (isSuccessful) {
-                System.out.println("Record about Appointment is updated with - not busy");
+                System.out.println("Record about Appointment is updated with - 'not busy'");
             }
         }
     }
@@ -94,7 +94,7 @@ public class Appointment {
             statement.setString(3, patient_person_code);
             boolean isSuccessful = statement.execute();
             if (isSuccessful) {
-                System.out.println("Record about Appointment is updated with - not busy");
+                System.out.println("Record about Appointment is updated with - 'not busy'");
             }
         }
     }
@@ -108,7 +108,9 @@ public class Appointment {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, selected_id_doctor_code);
             ResultSet resultSet = statement.executeQuery();
-            System.out.println("id_appointment | doctor_medical_speciality | doctor_name | doctor_surname  | visit_date | visit_time");
+            System.out.print("\033[4;1;255m");
+            System.out.println("Appointment ID  |  Doctor's speciality  |  Doctor's name   |   Doctor's surname  | Appointment date |  Appointment time");
+            System.out.print("\033[0m");
             while (resultSet.next()) {
                 Integer id_appointment = resultSet.getInt("id_appointment");
                 String doctor_medical_speciality = resultSet.getString("doctor_medical_speciality");
@@ -116,10 +118,7 @@ public class Appointment {
                 String doctor_surname = resultSet.getString("doctor_surname");
                 Date visit_date = resultSet.getDate("visit_date");
                 Time visit_time = resultSet.getTime("visit_time");
-                System.out.println(id_appointment + " | " + doctor_medical_speciality + " | "
-                        + doctor_name + " | " + doctor_surname + " | "
-                        + visit_date + " | " + visit_time);
-
+                System.out.printf(" \t %-13s %-24s %-20s %-20s %-20s %-20s\n", id_appointment, doctor_medical_speciality, doctor_name, doctor_surname, visit_date, visit_time);
             }
         }
     }
@@ -135,6 +134,9 @@ public class Appointment {
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
             //System.out.printf("List of all appointments for doctor with id %s: \n", id_doctor_code);
+            System.out.print("\033[4;1;255m");
+            System.out.println("\t    Date    |    Time    |    Patient's name    |    Patient's surname      ");
+            System.out.print("\033[0m");
             while (resultSet.next()) {
                 //int id_doctor_code = resultSet.getInt("id_doctor_code");
                 Date visit_date = resultSet.getDate("visit_date");
@@ -143,7 +145,7 @@ public class Appointment {
                 String patient_name = resultSet.getString("patient_name");
                 String patient_surname = resultSet.getString("patient_surname");
 
-                System.out.printf("Date: %s, time: %s, patient: %s %s \n", visit_date, visit_time, patient_name, patient_surname);
+                System.out.printf("\t %-14s %-15s %-21s %-15s\n", visit_date, visit_time, patient_name, patient_surname);
             }
         }
     }
@@ -158,6 +160,9 @@ public class Appointment {
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
             //System.out.printf("On %d you have the following appointments", dateDay);
+            System.out.print("\033[4;1;255m");
+            System.out.println("\t  Time  |  Patient's name  |  Patient's surname  ");
+            System.out.print("\033[0m");
             while (resultSet.next()) {
                 //int id_doctor_code = resultSet.getInt("id_doctor_code");
                 //Date visit_date = resultSet.getDate("visit_date");
@@ -165,7 +170,9 @@ public class Appointment {
                 //String patient_person_code = resultSet.getString("patient_person_code");
                 String patient_name = resultSet.getString("patient_name");
                 String patient_surname = resultSet.getString("patient_surname");
-                System.out.printf("time: %s, patient: %s %s \n", visit_time, patient_name, patient_surname);
+
+                System.out.printf("    %-14s %-17s %-15s\n", visit_time, patient_name, patient_surname);
+
             }
         }
     }
@@ -185,7 +192,10 @@ public class Appointment {
         //"ORDER BY visit_date AND visit_time DESC";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
-            System.out.printf("List of your appointment (s): \n");
+            System.out.printf("Your appointment(s): \n");
+            System.out.print("\033[4;1;255m");
+            System.out.println("Appointment ID  |  Date of the appointment  |  Time of the appointment   |   Doctor's name  | Doctor's surname  |  Doctor's speciality  |  Room number |  Price for the appointment");
+            System.out.print("\033[0m");
             while (resultSet.next()) {
                 Integer id_appointment = resultSet.getInt("id_appointment");
                 Date visit_date = resultSet.getDate("visit_date");
@@ -198,15 +208,13 @@ public class Appointment {
                 Integer doctor_room_number = resultSet.getInt("doctor_room_number");
                 Double doctor_visit_price = resultSet.getDouble("doctor_visit_price");
 
-                System.out.printf("Appointment id: %s, Date and time of appointment: %s at %s, \n" +
-                                "Patient: %s %s, \n" +
-                                "Doctor (speciality): %s, %s (%s) \n" +
-                                "Room: %s, \n" +
-                                "Price of the appointment: %s eur \n" +
-                                "----------------------------------\n",
-                        id_appointment, visit_date, visit_time, patient_name, patient_surname,
-                        doctor_name, doctor_surname, doctor_medical_speciality,
-                        doctor_room_number, doctor_visit_price);
+
+
+
+                System.out.printf(" \t %-20s %-25s %-25s %-20s %-18s %-23s %-21s %-20s\n", id_appointment, visit_date, visit_time, doctor_name, doctor_surname,
+                        doctor_medical_speciality, doctor_room_number, doctor_visit_price);
+                System.out.printf("");
+
             }
         }
     }

@@ -1,10 +1,8 @@
 package sda.group4.appointmentguru;
 
-import javax.print.Doc;
-import javax.xml.validation.Validator;
 import java.sql.*;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalTime;
 import java.util.Scanner;
 
 public class Doctors {
@@ -277,7 +275,7 @@ public class Doctors {
                         // "You don't have any appointment on 'yyyy-mm-dd'"
                         //System.out.println("All your appointments for the selected day: ");
 
-                            Appointment.viewAppointmentForOneDayDoctor(connection, selected_id_doctor_code, dateSelected);
+                        Appointment.viewAppointmentForOneDayDoctor(connection, selected_id_doctor_code, dateSelected);
 
                         break;
 
@@ -295,6 +293,14 @@ public class Doctors {
 //                        Time currentTime = Time.valueOf(LocalTime.now());
 //                        System.out.printf("Your next appointment (based on %s) is:\n", currentDate);
 //                        Appointment.viewNextAppointmentForDoctorBasedOnCurrentDate(connection, selected_id_doctor_code, currentDate);
+
+                        //sataisiju tādu, kur skatas uz datumu un laiku un skatas nākošo, bet japarbauda
+                        Date currentDate1 = Date.valueOf(LocalDate.now());
+                        Time currentTime1 = Time.valueOf(LocalTime.now());
+                        System.out.println(currentDate1+"   "+currentTime1);
+                        System.out.printf("Your next appointment (based on %s) is:\n", currentDate1);
+                        Appointment.viewNextAppointmentForDoctorBasedOnCurrentDateTime(connection, selected_id_doctor_code, currentDate1, currentTime1);
+
                         break;
 
                     default: // all other choose: perform if and only if none of the above conditions are met

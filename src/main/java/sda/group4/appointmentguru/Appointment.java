@@ -165,14 +165,64 @@ public class Appointment {
             System.out.print("\033[4;1;255m");
             System.out.println("    Time    |    Patient's name and surname    ");
             System.out.print("\033[0m");
-            while (resultSet.next()) {
-                //int id_doctor_code = resultSet.getInt("id_doctor_code");
-                //Date visit_date = resultSet.getDate("visit_date");
-                Time visit_time = resultSet.getTime("visit_time");
-                //String patient_person_code = resultSet.getString("patient_person_code");
-                String patient_name = resultSet.getString("patient_name");
-                String patient_surname = resultSet.getString("patient_surname");
-                System.out.printf("  %-14s %-10s %-15s\n", visit_time, patient_name, patient_surname);
+                while (resultSet.next()) {
+                    //int id_doctor_code = resultSet.getInt("id_doctor_code");
+                    //Date visit_date = resultSet.getDate("visit_date");
+                    Time visit_time = resultSet.getTime("visit_time");
+                    //String patient_person_code = resultSet.getString("patient_person_code");
+                    String patient_name = resultSet.getString("patient_name");
+                    String patient_surname = resultSet.getString("patient_surname");
+                    System.out.printf("  %-14s %-10s %-15s\n", visit_time, patient_name, patient_surname);
+            }
+        }
+    }
+
+//    public static void viewNextAppointmentForDoctorBasedOnCurrentDate(Connection connection, int id_doctor_code, Date currentDay) throws SQLException {
+//        String query = "SELECT visit_date, visit_time, patient_name, patient_surname " +
+//                "FROM appointment " +
+//                "INNER JOIN patient " +
+//                "ON appointment.patient_person_code = patient.patient_person_code " +
+//                "WHERE id_doctor_code = " + id_doctor_code + " AND visit_date >= '" + currentDay + "'AND date_time_busy = '1' LIMIT 1";
+//        try (PreparedStatement statement = connection.prepareStatement(query)) {
+//            ResultSet resultSet = statement.executeQuery();
+//            System.out.print("\033[4;1;255m");
+//            System.out.println("    Date    |    Time    |    Patient's name and surname    ");
+//            System.out.print("\033[0m");
+//            while (resultSet.next()) {
+//                Date visit_date = resultSet.getDate("visit_date");
+//                Time visit_time = resultSet.getTime("visit_time");
+//                String patient_name = resultSet.getString("patient_name");
+//                String patient_surname = resultSet.getString("patient_surname");
+//                System.out.printf("  %-20s %-20s %-10s %-15s\n", visit_date, visit_time, patient_name, patient_surname);
+//            }
+//        }
+//    }
+
+    public static void viewNextAppointmentForDoctor(Connection connection, int id_doctor_code, Date currentDay, Time currentDayTime ) throws SQLException {
+        String query = "SELECT visit_date, visit_time, patient_name, patient_surname " +
+                "FROM appointment " +
+                "INNER JOIN patient " +
+                "ON appointment.patient_person_code = patient.patient_person_code " +
+                "WHERE id_doctor_code = " + id_doctor_code + " AND visit_date >= '" + currentDay + "' AND visit_time > '"+currentDayTime+"' AND date_time_busy = '1' LIMIT 1";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+            boolean notEmptyRecord = resultSet.next();
+            if (notEmptyRecord == false) {
+
+                System.out.printf("You don't have any next appointments on %s after %s\n", currentDay, currentDayTime);
+            } else {
+
+                System.out.print("\033[4;1;255m");
+                System.out.println("    Date    |    Time    |    Patient's name and surname    ");
+                System.out.print("\033[0m");
+                while (notEmptyRecord) {
+                    Date visit_date = resultSet.getDate("visit_date");
+                    Time visit_time = resultSet.getTime("visit_time");
+                    String patient_name = resultSet.getString("patient_name");
+                    String patient_surname = resultSet.getString("patient_surname");
+                    System.out.printf("  %-14s %-14s %-10s %-15s\n", visit_date, visit_time, patient_name, patient_surname);
+                    notEmptyRecord=resultSet.next();
+                }
             }
         }
     }

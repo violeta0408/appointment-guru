@@ -1,5 +1,6 @@
 package sda.group4.appointmentguru;
 
+import javax.print.Doc;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -103,7 +104,7 @@ public class Doctors {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
             System.out.print("\033[4;1;255m");
-            System.out.println(     "Doctor's ID code     |     Doctor's speciality     |     Doctor's name and surname     |     Doctor's room number     |     "
+            System.out.println("Doctor's ID code     |     Doctor's speciality     |     Doctor's name and surname     |     Doctor's room number     |     "
                     + "Doctor's working hours     |     Visit price");
             System.out.print("\033[0m");
             while (resultSet.next()) {
@@ -158,7 +159,7 @@ public class Doctors {
         System.out.println("To update records about a doctor, please enter doctor's ID code: ");
         int doctorIdToUpdate = scanner.nextInt();
         //to check information about Doctor: is Doctor in DB (1) or not (0)
-        if (Doctors.isDoctorIDInDB(connection,doctorIdToUpdate)==1) {
+        if (Doctors.isDoctorIDInDB(connection, doctorIdToUpdate) == 1) {
             //to get new information from console about doctor
             Scanner scanner2 = new Scanner(System.in);
             System.out.println("Enter doctor's medical speciality:");
@@ -186,7 +187,7 @@ public class Doctors {
                     doctor_work_end_time_Update,
                     doctor_visit_price_Update,
                     doctorIdToUpdate);
-        }else{
+        } else {
             System.out.println("Doctor with this ID is not in our DB! It is not possible to make information updating.");
         }
     }
@@ -207,6 +208,20 @@ public class Doctors {
                 }
             }
             return id_doctor_code_result;
+        }
+    }
+    public static void printWorkingHoursForDoctor(Connection connection, int id_doctor_code) throws SQLException {
+        String query = "SELECT doctor_work_start_time, doctor_work_end_time " +
+                "from doctor " +
+                "where id_doctor_code= " + id_doctor_code + "";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                String doctor_work_start_time = resultSet.getString("doctor_work_start_time");
+                String doctor_work_end_time = resultSet.getString("doctor_work_end_time");
+                System.out.printf("Your working hours: %s - %s\n", doctor_work_start_time, doctor_work_end_time);
+
+            }
         }
     }
 
@@ -257,9 +272,17 @@ public class Doctors {
 
                     case 4: //4 - to see next appointment details as a doctor
                         //!!!so vel jataisa
-                        System.out.println("Your next appointment is: ");
-                        //te, jāsataisa, lai būtu next appointment
-                        //Appointment.viewMyNextAppointmentDoctor(connection, selected_id_doctor_code));
+                        Doctors.printWorkingHoursForDoctor(connection, selected_id_doctor_code);
+                        System.out.println("\nPlease enter the date for which you would like to see your next appointment. Enter the date using format YYYY-MM-DD");
+                        Date currentDate = Date.valueOf(scanner.next());
+                        System.out.println("Please enter the date for which you would like to see your next appointment. Enter the time using format hh:mm:ss");
+                        Time currentTime = Time.valueOf(scanner.next());
+                        Appointment.viewNextAppointmentForDoctor(connection, selected_id_doctor_code, currentDate, currentTime);
+
+//                        Date currentDate = Date.valueOf(LocalDate.now());
+//                        Time currentTime = Time.valueOf(LocalTime.now());
+//                        System.out.printf("Your next appointment (based on %s) is:\n", currentDate);
+//                        Appointment.viewNextAppointmentForDoctorBasedOnCurrentDate(connection, selected_id_doctor_code, currentDate);
                         break;
 
                     default: // all other choose: perform if and only if none of the above conditions are met

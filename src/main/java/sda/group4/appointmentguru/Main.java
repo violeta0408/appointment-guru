@@ -1,7 +1,6 @@
 package sda.group4.appointmentguru;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Scanner;
 

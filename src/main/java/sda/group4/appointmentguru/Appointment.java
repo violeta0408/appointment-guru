@@ -165,14 +165,14 @@ public class Appointment {
             System.out.print("\033[4;1;255m");
             System.out.println("    Time    |    Patient's name and surname    ");
             System.out.print("\033[0m");
-                while (resultSet.next()) {
-                    //int id_doctor_code = resultSet.getInt("id_doctor_code");
-                    //Date visit_date = resultSet.getDate("visit_date");
-                    Time visit_time = resultSet.getTime("visit_time");
-                    //String patient_person_code = resultSet.getString("patient_person_code");
-                    String patient_name = resultSet.getString("patient_name");
-                    String patient_surname = resultSet.getString("patient_surname");
-                    System.out.printf("  %-14s %-10s %-15s\n", visit_time, patient_name, patient_surname);
+            while (resultSet.next()) {
+                //int id_doctor_code = resultSet.getInt("id_doctor_code");
+                //Date visit_date = resultSet.getDate("visit_date");
+                Time visit_time = resultSet.getTime("visit_time");
+                //String patient_person_code = resultSet.getString("patient_person_code");
+                String patient_name = resultSet.getString("patient_name");
+                String patient_surname = resultSet.getString("patient_surname");
+                System.out.printf("  %-14s %-10s %-15s\n", visit_time, patient_name, patient_surname);
             }
         }
     }
@@ -198,12 +198,12 @@ public class Appointment {
 //        }
 //    }
 
-    public static void viewNextAppointmentForDoctor(Connection connection, int id_doctor_code, Date currentDay, Time currentDayTime ) throws SQLException {
+    public static void viewNextAppointmentForDoctor(Connection connection, int id_doctor_code, Date currentDay, Time currentDayTime) throws SQLException {
         String query = "SELECT visit_date, visit_time, patient_name, patient_surname " +
                 "FROM appointment " +
                 "INNER JOIN patient " +
                 "ON appointment.patient_person_code = patient.patient_person_code " +
-                "WHERE id_doctor_code = " + id_doctor_code + " AND visit_date >= '" + currentDay + "' AND visit_time > '"+currentDayTime+"' AND date_time_busy = '1' LIMIT 1";
+                "WHERE id_doctor_code = " + id_doctor_code + " AND visit_date >= '" + currentDay + "' AND visit_time > '" + currentDayTime + "' AND date_time_busy = '1' LIMIT 1";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
             boolean notEmptyRecord = resultSet.next();
@@ -221,15 +221,13 @@ public class Appointment {
                     String patient_name = resultSet.getString("patient_name");
                     String patient_surname = resultSet.getString("patient_surname");
                     System.out.printf("  %-14s %-14s %-10s %-15s\n", visit_date, visit_time, patient_name, patient_surname);
-                    notEmptyRecord=resultSet.next();
+                    notEmptyRecord = resultSet.next();
                 }
             }
         }
     }
 
     //to get all records with appointment Patient
-    // vel japadarbojas ar:
-    //  neizdevās arī sakārtot hronoloģiski, mainīju order by mainīgo secību, bet neizdevās
     public static void viewMyAppointmentPatient(Connection connection, String patient_person_code) throws SQLException {
         String query = "SELECT id_appointment, visit_date,visit_time, " +
                 "patient_name, patient_surname, " +
@@ -238,8 +236,7 @@ public class Appointment {
                 "INNER JOIN patient USING (patient_person_code) " +
                 "INNER JOIN doctor USING (id_doctor_code) " +
                 "WHERE patient_person_code = '" + patient_person_code + "' AND date_time_busy = '1' " +
-                "ORDER BY id_appointment AND visit_date AND visit_time";
-        //"ORDER BY visit_date AND visit_time DESC";
+                "ORDER BY visit_date ASC, visit_time ASC";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
             System.out.printf("Your appointment(s): \n");
@@ -260,7 +257,6 @@ public class Appointment {
                 System.out.printf(" \t %-20s %-25s %-25s %-10s %-19s %-24s %-18s %s EUR\n", id_appointment, visit_date, visit_time, doctor_name, doctor_surname,
                         doctor_medical_speciality, doctor_room_number, doctor_visit_price);
                 System.out.printf("");
-
             }
         }
     }

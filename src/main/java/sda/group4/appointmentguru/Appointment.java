@@ -113,7 +113,7 @@ public class Appointment {
             statement.setInt(1, selected_id_doctor_code);
             ResultSet resultSet = statement.executeQuery();
             System.out.print("\033[4;1;255m");
-            System.out.println("Appointment ID  |  Doctor's speciality  |  Doctor's name   |   Doctor's surname  | Appointment date |  Appointment time");
+            System.out.println("Appointment ID  |  Doctor's speciality  |  Doctor's name and surname  | Appointment date  |  Appointment time  ");
             System.out.print("\033[0m");
             while (resultSet.next()) {
                 Integer id_appointment = resultSet.getInt("id_appointment");
@@ -122,7 +122,7 @@ public class Appointment {
                 String doctor_surname = resultSet.getString("doctor_surname");
                 Date visit_date = resultSet.getDate("visit_date");
                 Time visit_time = resultSet.getTime("visit_time");
-                System.out.printf(" \t %-13s %-24s %-20s %-20s %-20s %-20s\n", id_appointment, doctor_medical_speciality, doctor_name, doctor_surname, visit_date, visit_time);
+                System.out.printf("  \t %-14s %-24s %-9s %-18s %-20s %-20s\n", id_appointment, doctor_medical_speciality, doctor_name, doctor_surname, visit_date, visit_time);
             }
         }
     }
@@ -138,7 +138,7 @@ public class Appointment {
             ResultSet resultSet = statement.executeQuery();
             //System.out.printf("List of all appointments for doctor with id %s: \n", id_doctor_code);
             System.out.print("\033[4;1;255m");
-            System.out.println("\t    Date    |    Time    |    Patient's name    |    Patient's surname      ");
+            System.out.println("\t   Date    |    Time    |    Patient's name and surname      ");
             System.out.print("\033[0m");
             while (resultSet.next()) {
                 //int id_doctor_code = resultSet.getInt("id_doctor_code");
@@ -147,7 +147,7 @@ public class Appointment {
                 //String patient_person_code = resultSet.getString("patient_person_code");
                 String patient_name = resultSet.getString("patient_name");
                 String patient_surname = resultSet.getString("patient_surname");
-                System.out.printf("\t %-14s %-15s %-21s %-15s\n", visit_date, visit_time, patient_name, patient_surname);
+                System.out.printf("\t%-14s %-15s %-10s %-14s\n", visit_date, visit_time, patient_name, patient_surname);
             }
         }
     }
@@ -163,7 +163,7 @@ public class Appointment {
             ResultSet resultSet = statement.executeQuery();
             //System.out.printf("On %d you have the following appointments", dateDay);
             System.out.print("\033[4;1;255m");
-            System.out.println("\t  Time  |  Patient's name  |  Patient's surname  ");
+            System.out.println("    Time    |    Patient's name and surname    ");
             System.out.print("\033[0m");
             while (resultSet.next()) {
                 //int id_doctor_code = resultSet.getInt("id_doctor_code");
@@ -172,7 +172,7 @@ public class Appointment {
                 //String patient_person_code = resultSet.getString("patient_person_code");
                 String patient_name = resultSet.getString("patient_name");
                 String patient_surname = resultSet.getString("patient_surname");
-                System.out.printf("    %-14s %-17s %-15s\n", visit_time, patient_name, patient_surname);
+                System.out.printf("  %-14s %-10s %-15s\n", visit_time, patient_name, patient_surname);
             }
         }
     }
@@ -194,7 +194,7 @@ public class Appointment {
             ResultSet resultSet = statement.executeQuery();
             System.out.printf("Your appointment(s): \n");
             System.out.print("\033[4;1;255m");
-            System.out.println("Appointment ID  |  Date of the appointment  |  Time of the appointment   |   Doctor's name  | Doctor's surname  |  Doctor's speciality  |  Room number |  Price for the appointment");
+            System.out.println("Appointment ID  |  Date of the appointment  |  Time of the appointment   |   Doctor's name and surname  |  Doctor's speciality  |  Room number |  Price for the appointment");
             System.out.print("\033[0m");
             while (resultSet.next()) {
                 Integer id_appointment = resultSet.getInt("id_appointment");
@@ -207,7 +207,7 @@ public class Appointment {
                 String doctor_surname = resultSet.getString("doctor_surname");
                 Integer doctor_room_number = resultSet.getInt("doctor_room_number");
                 Double doctor_visit_price = resultSet.getDouble("doctor_visit_price");
-                System.out.printf(" \t %-20s %-25s %-25s %-20s %-18s %-23s %-21s %-20s\n", id_appointment, visit_date, visit_time, doctor_name, doctor_surname,
+                System.out.printf(" \t %-20s %-25s %-25s %-10s %-19s %-24s %-18s %s EUR\n", id_appointment, visit_date, visit_time, doctor_name, doctor_surname,
                         doctor_medical_speciality, doctor_room_number, doctor_visit_price);
                 System.out.printf("");
 

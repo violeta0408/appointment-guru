@@ -97,7 +97,7 @@ public class Patients {
         while (runApplication == 1) {
             //information about what is possible to do in our application
             System.out.println("What would you like to do? Please type (1-4): ");
-            System.out.println("  1 - to see the details of all your appointments");
+            System.out.println("  1 - to see the details of all your appointment(s)");
             // japadoma vai tikai tie, kas nakotne (1) ;? vai pavisu laiku visi - ari pagatne (5)
             System.out.println("  2 - to apply for an appointment;");
             System.out.println("  3 - to cancel an appointment;");
@@ -182,7 +182,7 @@ public class Patients {
                 default: //all other choose: perform if and only if none of the above conditions are met
                     System.out.println("Sadly, you entered incorrect number. Please enter a valid number depending on what you would like to do - 1, 2, 3 or 4.");
             }
-            System.out.println("If you would like to do more operations - press 1");
+            System.out.println("If you would like to do more operations - press '1'");
             runApplication = scanner.nextInt();
         }
     }

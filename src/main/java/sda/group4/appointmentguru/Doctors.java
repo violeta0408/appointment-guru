@@ -103,9 +103,8 @@ public class Doctors {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
             System.out.print("\033[4;1;255m");
-            System.out.println("Doctor's ID code  |  Doctor's speciality  |  "
-                    + "Doctor's name  |  Doctor's surname  |  Doctor's room number  |  "
-                    + "Doctor's working hours start  |  Doctor's working hours end  |  Visit price");
+            System.out.println(     "Doctor's ID code     |     Doctor's speciality     |     Doctor's name and surname     |     Doctor's room number     |     "
+                    + "Doctor's working hours     |     Visit price");
             System.out.print("\033[0m");
             while (resultSet.next()) {
                 Integer id_doctor_code = resultSet.getInt("id_doctor_code");
@@ -116,7 +115,7 @@ public class Doctors {
                 Time doctor_work_start_time = resultSet.getTime("doctor_work_start_time");
                 Time doctor_work_end_time = resultSet.getTime("doctor_work_end_time");
                 Double doctor_visit_price = resultSet.getDouble("doctor_visit_price");
-                System.out.printf(" \t %-15s %-28s %-15s %-23s %-20s %-30s %-30s %-20s\n", id_doctor_code, doctor_medical_speciality, doctor_name, doctor_surname, doctor_room_number, doctor_work_start_time, doctor_work_end_time, doctor_visit_price);
+                System.out.printf("\t\t %-17s %-30s %-8s %-34s %-22s %-8s - %-20s %s EUR \n", id_doctor_code, doctor_medical_speciality, doctor_name, doctor_surname, doctor_room_number, doctor_work_start_time, doctor_work_end_time, doctor_visit_price);
             }
         }
     }

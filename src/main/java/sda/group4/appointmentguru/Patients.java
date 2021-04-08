@@ -123,32 +123,37 @@ public class Patients {
                     //to select the doctor from the list
                     System.out.println("To book an appointment please enter the doctor's ID code from a list: ");
                     int selected_id_doctor_code = scanner.nextInt();
-                    //parbaude vai ir no saraksta
 
-                    //to get all records with appointment available for Patient - for Patient choice
-                    System.out.println("Please choose the appointment from the list below: ");
-                    Appointment.printAllRecordDateTimeAvailable(connection, selected_id_doctor_code);
+                    //to check information about Doctor: is Doctor in DB (1) or not (0)
+                    if (Doctors.isDoctorIDInDB(connection, selected_id_doctor_code) == 1) {
 
-                    //to select the appointment from the list
-                    System.out.println("To book an appointment, please enter the ID code of the appointment from a list: ");
-                    int selected_id_appointment = scanner.nextInt();
+                        //to get all records with appointment available for Patient - for Patient choice
+                        System.out.println("Please choose the appointment from the list below: ");
+                        Appointment.printAllRecordDateTimeAvailable(connection, selected_id_doctor_code);
 
-                    //to get information is appointment for selected doctor or not (if is=1, if not=0)
-                    if (Appointment.isAppointmentForSelectedDoctor(connection, selected_id_appointment, selected_id_doctor_code) != 1) {
-                        System.out.println("Sadly, in our system doesn't exist any appointment with this ID. Please type the ID code of the appointment from the list. ");
-                    } else {
-                        //to get information is date_time_busy or not (if busy=1; if not =0)
-                        if (Appointment.isDateTimeBusyOrNot(connection, selected_id_appointment) == 1) {
-                            System.out.println("Sadly, at the moment there is no available appointment with this ID. Please make sure to enter ID code from the list of available appointment times. Please type the ID code of the available appointment.");
+                        //to select the appointment from the list
+                        System.out.println("To book an appointment, please enter the ID code of the appointment from a list: ");
+                        int selected_id_appointment = scanner.nextInt();
+
+                        //to get information is appointment for selected doctor or not (if is=1, if not=0)
+                        if (Appointment.isAppointmentForSelectedDoctor(connection, selected_id_appointment, selected_id_doctor_code) != 1) {
+                            System.out.println("Sadly, in our system doesn't exist any appointment with this ID. Please type the ID code of the appointment from the list. ");
                         } else {
-                            //to get information about Patient it is in DB or not
-                            //to get new information from console about patient if we don't have it in DB
-                            if (Patients.isPersonalCodeInDB(connection, patient_person_code) != 1) {
-                                Patients.insertPatientDetails(connection, patient_person_code);
+                            //to get information is date_time_busy or not (if busy=1; if not =0)
+                            if (Appointment.isDateTimeBusyOrNot(connection, selected_id_appointment) == 1) {
+                                System.out.println("Sadly, at the moment there is no available appointment with this ID. Please make sure to enter ID code from the list of available appointment times. Please type the ID code of the available appointment.");
+                            } else {
+                                //to get information about Patient it is in DB or not
+                                //to get new information from console about patient if we don't have it in DB
+                                if (Patients.isPersonalCodeInDB(connection, patient_person_code) != 1) {
+                                    Patients.insertPatientDetails(connection, patient_person_code);
+                                }
+                                //to update information in Appointment table
+                                Appointment.updateAppointmentsWithPatientBusy(connection, selected_id_appointment, patient_person_code);
                             }
-                            //to update information in Appointment table
-                            Appointment.updateAppointmentsWithPatientBusy(connection, selected_id_appointment, patient_person_code);
                         }
+                    } else {
+                        System.out.println("Doctor with this ID is not in our DB!");
                     }
                     break;
 

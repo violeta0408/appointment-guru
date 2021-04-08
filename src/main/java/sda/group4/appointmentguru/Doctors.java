@@ -298,7 +298,7 @@ public class Doctors {
                         Date currentDate1 = Date.valueOf(LocalDate.now());
                         Time currentTime1 = Time.valueOf(LocalTime.now());
                         System.out.println(currentDate1+"   "+currentTime1);
-                        System.out.printf("Your next appointment (based on %s) is:\n", currentDate1);
+                        System.out.printf("Your next appointment (based on %s  %s) is:\n", currentDate1, currentTime1);
                         Appointment.viewNextAppointmentForDoctorBasedOnCurrentDateTime(connection, selected_id_doctor_code, currentDate1, currentTime1);
 
                         break;

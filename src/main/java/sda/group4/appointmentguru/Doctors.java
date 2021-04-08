@@ -1,8 +1,10 @@
 package sda.group4.appointmentguru;
 
 import javax.print.Doc;
+import javax.xml.validation.Validator;
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Doctors {
@@ -210,6 +212,10 @@ public class Doctors {
             return id_doctor_code_result;
         }
     }
+
+    //To see doctor's working hours
+    //Varbūt šo metodi arī nevajag
+    // pagaidam si metode ir pie doctorRequest case 4
     public static void printWorkingHoursForDoctor(Connection connection, int id_doctor_code) throws SQLException {
         String query = "SELECT doctor_work_start_time, doctor_work_end_time " +
                 "from doctor " +
@@ -265,20 +271,26 @@ public class Doctors {
                     case 3: //3 - to see all appointments for the selected day as a doctor
                         System.out.println("Please enter the date for which you would like to see your appointments. Enter the date using format YYYY-MM-DD");
                         Date dateSelected = Date.valueOf(scanner.next());
-                        //?parbaude uz ievaditu datumu
-                        System.out.println("All your appointments for the selected day: ");
-                        Appointment.viewAppointmentForOneDayDoctor(connection, selected_id_doctor_code, dateSelected);
+                        //?parbaude uz ievaditu datumu -
+                        // viewAppointmentForOneDayDoctor uztaisiju parbaudi ar boolean
+                        // ja nav pierakstu šajā datumā, tad parādīs:
+                        // "You don't have any appointment on 'yyyy-mm-dd'"
+                        //System.out.println("All your appointments for the selected day: ");
+
+                            Appointment.viewAppointmentForOneDayDoctor(connection, selected_id_doctor_code, dateSelected);
+
                         break;
 
                     case 4: //4 - to see next appointment details as a doctor
                         //!!!so vel jataisa
                         Doctors.printWorkingHoursForDoctor(connection, selected_id_doctor_code);
-                        System.out.println("\nPlease enter the date for which you would like to see your next appointment. Enter the date using format YYYY-MM-DD");
+                        System.out.println("\nPlease enter the date for which you would like to see your next appointment. Enter date using format YYYY-MM-DD");
                         Date currentDate = Date.valueOf(scanner.next());
-                        System.out.println("Please enter the time for which you would like to see your next appointment. Enter the time using format hh:mm:ss");
+                        System.out.println("Please enter the time for which you would like to see your next appointment. Enter time using format hh:mm:ss");
                         Time currentTime = Time.valueOf(scanner.next());
                         Appointment.viewNextAppointmentForDoctor(connection, selected_id_doctor_code, currentDate, currentTime);
 
+//So visu zemak iekomenteto vistizamak vajadzes izdzest
 //                        Date currentDate = Date.valueOf(LocalDate.now());
 //                        Time currentTime = Time.valueOf(LocalTime.now());
 //                        System.out.printf("Your next appointment (based on %s) is:\n", currentDate);

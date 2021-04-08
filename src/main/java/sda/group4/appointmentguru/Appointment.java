@@ -164,22 +164,31 @@ public class Appointment {
                 "ORDER BY visit_time ASC";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
-            //System.out.printf("On %d you have the following appointments", dateDay);
-            System.out.print("\033[4;1;255m");
-            System.out.println("    Time    |    Patient's name and surname    ");
-            System.out.print("\033[0m");
-            while (resultSet.next()) {
-                //int id_doctor_code = resultSet.getInt("id_doctor_code");
-                //Date visit_date = resultSet.getDate("visit_date");
-                Time visit_time = resultSet.getTime("visit_time");
-                //String patient_person_code = resultSet.getString("patient_person_code");
-                String patient_name = resultSet.getString("patient_name");
-                String patient_surname = resultSet.getString("patient_surname");
-                System.out.printf("  %-14s %-10s %-15s\n", visit_time, patient_name, patient_surname);
+            boolean notEmptyRecord = resultSet.next();
+            if (notEmptyRecord == false) {
+
+                System.out.printf("You don't have any appointment on %s\n", dateDay);
+            } else {
+
+                System.out.print("\033[4;1;255m");
+                System.out.println("    Time    |    Patient's name and surname    ");
+                System.out.print("\033[0m");
+                while (notEmptyRecord) {
+                    //int id_doctor_code = resultSet.getInt("id_doctor_code");
+                    //Date visit_date = resultSet.getDate("visit_date");
+                    Time visit_time = resultSet.getTime("visit_time");
+                    //String patient_person_code = resultSet.getString("patient_person_code");
+                    String patient_name = resultSet.getString("patient_name");
+                    String patient_surname = resultSet.getString("patient_surname");
+                    System.out.printf("  %-14s %-10s %-15s\n", visit_time, patient_name, patient_surname);
+                    notEmptyRecord = resultSet.next();
+                }
             }
         }
     }
 
+
+//    So metodi varbūt nemaz nevajadzēs, jo izveidota tikai balstoties uz datumu. Tadejadi izvada tikai pirmo pierakstu dienā
 //    public static void viewNextAppointmentForDoctorBasedOnCurrentDate(Connection connection, int id_doctor_code, Date currentDay) throws SQLException {
 //        String query = "SELECT visit_date, visit_time, patient_name, patient_surname " +
 //                "FROM appointment " +
@@ -213,7 +222,7 @@ public class Appointment {
             boolean notEmptyRecord = resultSet.next();
             if (notEmptyRecord == false) {
 
-                System.out.printf("You don't have any next appointments on %s after %s\n", currentDay, currentDayTime);
+                System.out.printf("You don't have any next appointment on %s after %s\n", currentDay, currentDayTime);
             } else {
 
                 System.out.print("\033[4;1;255m");
@@ -251,8 +260,8 @@ public class Appointment {
                 Integer id_appointment = resultSet.getInt("id_appointment");
                 Date visit_date = resultSet.getDate("visit_date");
                 Time visit_time = resultSet.getTime("visit_time");
-                String patient_name = resultSet.getString("patient_name");
-                String patient_surname = resultSet.getString("patient_surname");
+               // String patient_name = resultSet.getString("patient_name");
+                //String patient_surname = resultSet.getString("patient_surname");
                 String doctor_medical_speciality = resultSet.getString("doctor_medical_speciality");
                 String doctor_name = resultSet.getString("doctor_name");
                 String doctor_surname = resultSet.getString("doctor_surname");

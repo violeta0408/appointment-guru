@@ -108,7 +108,8 @@ public class Appointment {
         String sql = "SELECT appointment.id_appointment, " +
                 "doctor.doctor_medical_speciality, doctor.doctor_name, doctor.doctor_surname, " +
                 "appointment.visit_date, appointment.visit_time from appointment inner join doctor " +
-                "on appointment.id_doctor_code=doctor.id_doctor_code where appointment.date_time_busy=0 and appointment.id_doctor_code=?";
+                "on appointment.id_doctor_code=doctor.id_doctor_code where appointment.date_time_busy=0 and appointment.id_doctor_code=?"+
+                "ORDER BY appointment.visit_date ASC, appointment.visit_time ASC";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, selected_id_doctor_code);
             ResultSet resultSet = statement.executeQuery();
@@ -133,7 +134,8 @@ public class Appointment {
                 "FROM appointment " +
                 "INNER JOIN patient " +
                 "ON appointment.patient_person_code = patient.patient_person_code " +
-                "WHERE id_doctor_code = " + id_doctor_code + " AND date_time_busy = '1'";
+                "WHERE id_doctor_code = " + id_doctor_code + " AND date_time_busy = '1'"+
+                "ORDER BY visit_date ASC, visit_time ASC";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
             //System.out.printf("List of all appointments for doctor with id %s: \n", id_doctor_code);
@@ -158,7 +160,8 @@ public class Appointment {
                 "FROM appointment " +
                 "INNER JOIN patient " +
                 "ON appointment.patient_person_code = patient.patient_person_code " +
-                "WHERE id_doctor_code = " + id_doctor_code + " AND visit_date = '" + dateDay + "' AND date_time_busy = '1'";
+                "WHERE id_doctor_code = " + id_doctor_code + " AND visit_date = '" + dateDay + "' AND date_time_busy = '1'"+
+                "ORDER BY visit_time ASC";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
             //System.out.printf("On %d you have the following appointments", dateDay);
@@ -182,7 +185,8 @@ public class Appointment {
 //                "FROM appointment " +
 //                "INNER JOIN patient " +
 //                "ON appointment.patient_person_code = patient.patient_person_code " +
-//                "WHERE id_doctor_code = " + id_doctor_code + " AND visit_date >= '" + currentDay + "'AND date_time_busy = '1' LIMIT 1";
+//                "WHERE id_doctor_code = " + id_doctor_code + " AND visit_date >= '" + currentDay + "'AND date_time_busy = '1' LIMIT 1"+
+//                "ORDER BY visit_date ASC, visit_time ASC";
 //        try (PreparedStatement statement = connection.prepareStatement(query)) {
 //            ResultSet resultSet = statement.executeQuery();
 //            System.out.print("\033[4;1;255m");

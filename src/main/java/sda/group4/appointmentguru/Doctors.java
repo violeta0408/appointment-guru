@@ -275,7 +275,7 @@ public class Doctors {
                         Doctors.printWorkingHoursForDoctor(connection, selected_id_doctor_code);
                         System.out.println("\nPlease enter the date for which you would like to see your next appointment. Enter the date using format YYYY-MM-DD");
                         Date currentDate = Date.valueOf(scanner.next());
-                        System.out.println("Please enter the date for which you would like to see your next appointment. Enter the time using format hh:mm:ss");
+                        System.out.println("Please enter the time for which you would like to see your next appointment. Enter the time using format hh:mm:ss");
                         Time currentTime = Time.valueOf(scanner.next());
                         Appointment.viewNextAppointmentForDoctor(connection, selected_id_doctor_code, currentDate, currentTime);
 

@@ -21,10 +21,10 @@ public class Administrator {
             //choose what you will do in our application
             Scanner scanner = new Scanner(System.in);
             System.out.println("Enter your choice: ");
-            int selectedChoose = scanner.nextInt();
+            int selectedChoice = scanner.nextInt();
 
-            //operation after selectedChoose depend of choose - start process
-            switch (selectedChoose) {
+            //switch case depends on the selectedChoice
+            switch (selectedChoice) {
                 case 1: //1 - to put new information about a doctor in database
 
                     //to get all information about Doctors, who work in our hospital

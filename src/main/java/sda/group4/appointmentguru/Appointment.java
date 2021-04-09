@@ -105,13 +105,15 @@ public class Appointment {
         }
     }
 
-    //to get all records with available appointments for Patient (past and future)
-    public static void printAllRecordDateTimeAvailable(Connection connection, int selected_id_doctor_code) throws SQLException {
+    //to get all records with available appointments for Patient (only future)
+    public static void printAllRecordDateTimeAvailableInFuture(Connection connection, int selected_id_doctor_code, Date currentDay, Time currentTime) throws SQLException {
         String sql = "SELECT appointment.id_appointment, " +
                 "doctor.doctor_medical_speciality, doctor.doctor_name, doctor.doctor_surname, " +
-                "appointment.visit_date, appointment.visit_time from appointment inner join doctor " +
-                "on appointment.id_doctor_code=doctor.id_doctor_code where appointment.date_time_busy=0 and appointment.id_doctor_code=? " +
-                "ORDER BY appointment.visit_date ASC, appointment.visit_time ASC";
+                "appointment.visit_date, appointment.visit_time FROM appointment INNER JOIN doctor " +
+                "ON appointment.id_doctor_code=doctor.id_doctor_code " +
+                "WHERE appointment.date_time_busy=0 and appointment.id_doctor_code=? " +
+                " AND ((appointment.visit_date = '" + currentDay + "' AND appointment.visit_time >= '" + currentTime + "') OR (appointment.visit_date> '" + currentDay +
+                "')) ORDER BY appointment.visit_date ASC, appointment.visit_time ASC";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, selected_id_doctor_code);
             ResultSet resultSet = statement.executeQuery();
@@ -130,32 +132,28 @@ public class Appointment {
         }
     }
 
-    //to get all records with appointment for Doctor (past and future)
-    public static void viewMyAppointmentDoctor(Connection connection, int id_doctor_code) throws SQLException {
+    //to get all records with appointment for Doctor (only future)
+    public static void viewMyAppointmentDoctorInFuture(Connection connection, int id_doctor_code, Date currentDay, Time currentTime) throws SQLException {
         String query = "SELECT visit_date, visit_time, patient_name, patient_surname " +
                 "FROM appointment " +
                 "INNER JOIN patient " +
                 "ON appointment.patient_person_code = patient.patient_person_code " +
                 "WHERE id_doctor_code = " + id_doctor_code + " AND date_time_busy = '1'" +
-                "ORDER BY visit_date ASC, visit_time ASC";
+                " AND ((appointment.visit_date = '" + currentDay + "' AND appointment.visit_time >= '" + currentTime + "') OR (appointment.visit_date> '" + currentDay +
+                "')) ORDER BY visit_date ASC, visit_time ASC";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
-            boolean notEmptyRecord = resultSet.next();
-            if (notEmptyRecord == false) {
-                System.out.println("You don't have any appointments yet");
-            } else {
-                System.out.printf("List of all appointments for doctor with ID %s: \n", id_doctor_code);
-                System.out.print("\033[4;1;255m");
-                System.out.println("\t   Date    |    Time    |    Patient's name and surname      ");
-                System.out.print("\033[0m");
-                while (resultSet.next()) {
-                    Date visit_date = resultSet.getDate("visit_date");
-                    Time visit_time = resultSet.getTime("visit_time");
-                    //String patient_person_code = resultSet.getString("patient_person_code");
-                    String patient_name = resultSet.getString("patient_name");
-                    String patient_surname = resultSet.getString("patient_surname");
-                    System.out.printf("\t%-14s %-15s %-10s %-14s\n", visit_date, visit_time, patient_name, patient_surname);
-                }
+            System.out.printf("List of all appointments for doctor with ID %s: \n", id_doctor_code);
+            System.out.print("\033[4;1;255m");
+            System.out.println("\t   Date    |    Time    |    Patient's name and surname      ");
+            System.out.print("\033[0m");
+            while (resultSet.next()) {
+                Date visit_date = resultSet.getDate("visit_date");
+                Time visit_time = resultSet.getTime("visit_time");
+                //String patient_person_code = resultSet.getString("patient_person_code");
+                String patient_name = resultSet.getString("patient_name");
+                String patient_surname = resultSet.getString("patient_surname");
+                System.out.printf("\t%-14s %-15s %-10s %-14s\n", visit_date, visit_time, patient_name, patient_surname);
             }
         }
     }
@@ -171,7 +169,7 @@ public class Appointment {
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
             boolean notEmptyRecord = resultSet.next();
-            if (notEmptyRecord == false) {
+            if (!notEmptyRecord) {
                 System.out.printf("There is no appointment on %s\n", dateDay);
             } else {
                 System.out.print("\033[4;1;255m");
@@ -197,13 +195,14 @@ public class Appointment {
                 "INNER JOIN patient " +
                 "ON appointment.patient_person_code = patient.patient_person_code " +
                 "WHERE id_doctor_code = " + id_doctor_code +
-                " AND visit_date >= '" + currentDay + "' AND visit_time >= '" + currentTime + "'AND date_time_busy = '1' " +
+                " AND ((visit_date = '" + currentDay + "' AND visit_time >= '" + currentTime + "') OR (visit_date> '" + currentDay +
+                "')) AND date_time_busy = '1' " +
                 "ORDER BY visit_date ASC, visit_time ASC " +
                 "LIMIT 1";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
             boolean notEmptyRecord = resultSet.next();
-            if (notEmptyRecord == false) {
+            if (!notEmptyRecord) {
                 System.out.printf("You don't have any next appointment on %s after %s\n", currentDay, currentTime);
             } else {
                 System.out.print("\033[4;1;255m");
@@ -221,44 +220,69 @@ public class Appointment {
         }
     }
 
-
-    //to get all appointment records for the Patient (past and future)
-    public static void viewMyAppointmentPatient(Connection connection, String patient_person_code) throws SQLException {
+    //to get all appointment records for the Patient (future)
+    public static void viewMyAppointmentPatientFuture(Connection connection, String patient_person_code, Date currentDay, Time currentTime) throws SQLException {
         String query = "SELECT id_appointment, visit_date,visit_time, " +
                 "patient_name, patient_surname, " +
                 "doctor_medical_speciality, doctor_name, doctor_surname, doctor_room_number, doctor_visit_price " +
                 "FROM appointment " +
                 "INNER JOIN patient USING (patient_person_code) " +
                 "INNER JOIN doctor USING (id_doctor_code) " +
-                "WHERE patient_person_code = '" + patient_person_code + "' AND date_time_busy = '1' " +
+                "WHERE patient_person_code = '" + patient_person_code +
+                "' AND ((visit_date = '" + currentDay + "' AND visit_time >= '" + currentTime + "') OR (visit_date> '" + currentDay +
+                "')) AND date_time_busy = '1' " +
                 "ORDER BY visit_date ASC, visit_time ASC";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
-            boolean notEmptyRecord = resultSet.next();
-            if (notEmptyRecord == false) {
-                System.out.println("You don't have any appointments yet");
-            } else {
-                System.out.println("Your appointment(s): \n");
-                System.out.print("\033[4;1;255m");
-                System.out.println("Appointment ID  |  Date of the appointment  |  Time of the appointment   |   Doctor's name and surname  |  Doctor's speciality  |  Room number |  Price for the appointment");
-                System.out.print("\033[0m");
-                while (resultSet.next()) {
-                    Integer id_appointment = resultSet.getInt("id_appointment");
-                    Date visit_date = resultSet.getDate("visit_date");
-                    Time visit_time = resultSet.getTime("visit_time");
-                    // String patient_name = resultSet.getString("patient_name");
-                    //String patient_surname = resultSet.getString("patient_surname");
-                    String doctor_medical_speciality = resultSet.getString("doctor_medical_speciality");
-                    String doctor_name = resultSet.getString("doctor_name");
-                    String doctor_surname = resultSet.getString("doctor_surname");
-                    Integer doctor_room_number = resultSet.getInt("doctor_room_number");
-                    Double doctor_visit_price = resultSet.getDouble("doctor_visit_price");
-                    System.out.printf(" \t %-20s %-25s %-25s %-10s %-19s %-24s %-18s %s EUR\n", id_appointment, visit_date, visit_time, doctor_name, doctor_surname,
-                            doctor_medical_speciality, doctor_room_number, doctor_visit_price);
-                    System.out.println(" ");
-                }
+            System.out.println("Your future appointment(s): ");
+            System.out.print("\033[4;1;255m");
+            System.out.println("Appointment ID  |  Date of the appointment  |  Time of the appointment   |   Doctor's name and surname  |  Doctor's speciality  |  Room number |  Price for the appointment");
+            System.out.print("\033[0m");
+            while (resultSet.next()) {
+                Integer id_appointment = resultSet.getInt("id_appointment");
+                Date visit_date = resultSet.getDate("visit_date");
+                Time visit_time = resultSet.getTime("visit_time");
+                String doctor_medical_speciality = resultSet.getString("doctor_medical_speciality");
+                String doctor_name = resultSet.getString("doctor_name");
+                String doctor_surname = resultSet.getString("doctor_surname");
+                Integer doctor_room_number = resultSet.getInt("doctor_room_number");
+                Double doctor_visit_price = resultSet.getDouble("doctor_visit_price");
+                System.out.printf(" \t %-20s %-25s %-25s %-10s %-19s %-24s %-18s %s EUR\n", id_appointment, visit_date, visit_time, doctor_name, doctor_surname,
+                        doctor_medical_speciality, doctor_room_number, doctor_visit_price);
             }
+        }
+    }
 
+    //to get all appointment records for the Patient (past)
+    public static void viewMyAppointmentPatientPast(Connection connection, String patient_person_code, Date currentDay, Time currentTime) throws SQLException {
+        String query = "SELECT id_appointment, visit_date,visit_time, " +
+                "patient_name, patient_surname, " +
+                "doctor_medical_speciality, doctor_name, doctor_surname, doctor_room_number, doctor_visit_price " +
+                "FROM appointment " +
+                "INNER JOIN patient USING (patient_person_code) " +
+                "INNER JOIN doctor USING (id_doctor_code) " +
+                "WHERE patient_person_code = '" + patient_person_code +
+                "' AND ((visit_date = '" + currentDay + "' AND visit_time < '" + currentTime + "') OR (visit_date< '" + currentDay +
+                "')) AND date_time_busy = '1' " +
+                "ORDER BY visit_date ASC, visit_time ASC";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+            System.out.println("Your past appointment(s): ");
+            System.out.print("\033[4;1;255m");
+            System.out.println("Appointment ID  |  Date of the appointment  |  Time of the appointment   |   Doctor's name and surname  |  Doctor's speciality  |  Room number |  Price for the appointment");
+            System.out.print("\033[0m");
+            while (resultSet.next()) {
+                Integer id_appointment = resultSet.getInt("id_appointment");
+                Date visit_date = resultSet.getDate("visit_date");
+                Time visit_time = resultSet.getTime("visit_time");
+                String doctor_medical_speciality = resultSet.getString("doctor_medical_speciality");
+                String doctor_name = resultSet.getString("doctor_name");
+                String doctor_surname = resultSet.getString("doctor_surname");
+                Integer doctor_room_number = resultSet.getInt("doctor_room_number");
+                Double doctor_visit_price = resultSet.getDouble("doctor_visit_price");
+                System.out.printf(" \t %-20s %-25s %-25s %-10s %-19s %-24s %-18s %s EUR\n ", id_appointment, visit_date, visit_time, doctor_name, doctor_surname,
+                        doctor_medical_speciality, doctor_room_number, doctor_visit_price);
+            }
         }
     }
 

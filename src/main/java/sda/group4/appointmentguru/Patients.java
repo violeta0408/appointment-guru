@@ -1,6 +1,8 @@
 package sda.group4.appointmentguru;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Scanner;
 
 public class Patients {
@@ -77,7 +79,7 @@ public class Patients {
                 if (patient_person_code.equals(patient_person_code_selected)) {
                     id_patient_result = 1;
                 } else {
-                    id_patient_result = id_patient_result;
+                    id_patient_result=id_patient_result;
                 }
             }
             return id_patient_result;
@@ -92,6 +94,11 @@ public class Patients {
         System.out.println("Please enter your personal code: ");
         String patient_person_code = scanner.next();
 
+        //to get today's date and time
+        Date currentDate = Date.valueOf(LocalDate.now());
+        Time currentTime = Time.valueOf(LocalTime.now());
+        System.out.println(currentDate+"   "+currentTime);
+
         //start with while - to run application many times
         int runApplication = 1;
         while (runApplication == 1) {
@@ -101,18 +108,17 @@ public class Patients {
             System.out.println("  2 - to apply for an appointment;");
             System.out.println("  3 - to cancel an appointment;");
             System.out.println("  4 - to delete your data from the system.");
-            // japadoma vai tikai tie, kas nakotne (1) ;? vai pavisu laiku visi - ari pagatne (5)
-            // 1 - to history of all yours appointments (it is also with case 3, should Update after improvements)
-            // Possible improvement: 5, 6 - can divide to past and future with current day and current time
 
             //enter choice what you would like to do in our application
             System.out.println("Enter your choice: ");
-            int selectedChoose = scanner.nextInt();
+            int selectedChoice = scanner.nextInt();
 
-            //operation after selectedChoose depend of choose - start process
-            switch (selectedChoose) {
+            //switch case depends on the selectedChoice
+            switch (selectedChoice) {
                 case 1: //1 - to see all yours reserved appointments
-                    Appointment.viewMyAppointmentPatient(connection, patient_person_code);
+                    Appointment.viewMyAppointmentPatientFuture(connection, patient_person_code, currentDate, currentTime);
+                    System.out.println(" ");
+                    Appointment.viewMyAppointmentPatientPast(connection, patient_person_code, currentDate, currentTime);
                     break;
 
                 case 2: //2 - to book an appointment
@@ -131,7 +137,7 @@ public class Patients {
 
                         //to get all records with available appointments for Patient
                         System.out.println("Please choose the appointment from the list below: ");
-                        Appointment.printAllRecordDateTimeAvailable(connection, selected_id_doctor_code);
+                        Appointment.printAllRecordDateTimeAvailableInFuture(connection, selected_id_doctor_code,currentDate,currentTime);
 
                         //to select the appointment from the list
                         System.out.println("To book an appointment, please enter the ID code of the appointment from a list: ");
@@ -162,7 +168,7 @@ public class Patients {
                 case 3: //3 - to delete an appointment
 
                     //to see all appointments reserved by the Patient
-                    Appointment.viewMyAppointmentPatient(connection, patient_person_code);
+                    Appointment.viewMyAppointmentPatientFuture(connection, patient_person_code, currentDate, currentTime);
 
                     //to select the visit to cancel
                     System.out.println("Please enter the ID of the appointment which you would like to cancel: ");

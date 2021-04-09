@@ -215,6 +215,12 @@ public class Doctors {
 
     //Doctor can see his/her all appointments, appointments for today, for any selected day and next appointment
     public static void doctorRequest(Connection connection) throws SQLException {
+
+        //to get today's date and time
+        Date currentDate = Date.valueOf(LocalDate.now());
+        Time currentTime = Time.valueOf(LocalTime.now());
+        System.out.println(currentDate+"   "+currentTime);
+
         //start with while - to can run application many times
         int runApplication = 1;
         while (runApplication == 1) {
@@ -227,19 +233,19 @@ public class Doctors {
             if (Doctors.isDoctorIDInDB(connection, selected_id_doctor_code) == 1) {
                 //information about what is possible to do in our application
                 System.out.println("What would you like to do? Please enter 1, 2, 3 or 4: ");
-                System.out.println("  1 - to see all your appointments");
+                System.out.println("  1 - to see all your future appointments");
                 System.out.println("  2 - to see all your appointments for today");
                 System.out.println("  3 - to see all your appointments for the selected day");
                 System.out.println("  4 - to see next appointment details");
 
                 //enter choice what you will do in our application
                 System.out.println("Enter your choice: ");
-                int selectedChoose = scanner.nextInt();
+                int selectedChoice = scanner.nextInt();
 
-                //operation after selectedChoose depend of choose - start process
-                switch (selectedChoose) {
+                //switch case depends on the selectedChoice
+                switch (selectedChoice) {
                     case 1: //1 - to see all appointment as a doctor
-                        Appointment.viewMyAppointmentDoctor(connection, selected_id_doctor_code);
+                        Appointment.viewMyAppointmentDoctorInFuture(connection, selected_id_doctor_code, currentDate, currentTime);
                         break;
 
                     case 2: //2 - to see all appointments for today as a doctor (past and future)
@@ -255,11 +261,8 @@ public class Doctors {
                         break;
 
                     case 4: //4 - to see next appointment details as a doctor
-                        Date currentDate1 = Date.valueOf(LocalDate.now());
-                        Time currentTime1 = Time.valueOf(LocalTime.now());
-                        System.out.println(currentDate1+"   "+currentTime1);
-                        System.out.printf("Your next appointment (based on %s  %s) is:\n", currentDate1, currentTime1);
-                        Appointment.viewNextAppointmentForDoctor(connection, selected_id_doctor_code, currentDate1, currentTime1);
+                        System.out.printf("Your next appointment (based on %s  %s) is:\n", currentDate, currentTime);
+                        Appointment.viewNextAppointmentForDoctor(connection, selected_id_doctor_code, currentDate, currentTime);
                         break;
 
                     default: // all other cases: perform if and only if none of the above conditions are met

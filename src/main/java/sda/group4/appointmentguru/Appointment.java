@@ -108,7 +108,7 @@ public class Appointment {
         String sql = "SELECT appointment.id_appointment, " +
                 "doctor.doctor_medical_speciality, doctor.doctor_name, doctor.doctor_surname, " +
                 "appointment.visit_date, appointment.visit_time from appointment inner join doctor " +
-                "on appointment.id_doctor_code=doctor.id_doctor_code where appointment.date_time_busy=0 and appointment.id_doctor_code=?" +
+                "on appointment.id_doctor_code=doctor.id_doctor_code where appointment.date_time_busy=0 and appointment.id_doctor_code=? " +
                 "ORDER BY appointment.visit_date ASC, appointment.visit_time ASC";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, selected_id_doctor_code);

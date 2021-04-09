@@ -44,7 +44,7 @@ public class Main {
                     break;
                 default: //all other cases - perform if and only if none of the above conditions are met
                     System.out.println("Unfortunately, you entered invalid number! \nI" +
-                            "f you are a Patient, please press --> '1'\n" +
+                            "If you are a Patient, please press --> '1'\n" +
                             "If you are a Doctor, please press --> '2' \n" +
                             "If you are a Database administrator - press --> '3'! \n" +
                             "We apologise for the inconvenience.");

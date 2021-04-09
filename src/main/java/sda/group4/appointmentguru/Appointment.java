@@ -140,7 +140,7 @@ public class Appointment {
             ResultSet resultSet = statement.executeQuery();
             boolean notEmptyRecord = resultSet.next();
             if (notEmptyRecord == false) {
-                System.out.println("You don't have any next appointments yet");
+                System.out.println("You don't have any appointments yet");
             } else {
                 System.out.printf("List of all appointments for doctor with ID %s: \n", id_doctor_code);
                 System.out.print("\033[4;1;255m");
@@ -288,7 +288,7 @@ public class Appointment {
             ResultSet resultSet = statement.executeQuery();
             boolean notEmptyRecord = resultSet.next();
             if (notEmptyRecord == false) {
-                System.out.println("You don't have any next appointments yet");
+                System.out.println("You don't have any appointments yet");
             } else {
                 System.out.println("Your appointment(s): \n");
                 System.out.print("\033[4;1;255m");

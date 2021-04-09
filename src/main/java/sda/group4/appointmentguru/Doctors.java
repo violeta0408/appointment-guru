@@ -52,7 +52,7 @@ public class Doctors {
         }
     }
 
-    //to update information in Doctor table, if it was some mistake before
+    //to update information in Doctor table, if there was some mistake before
     public static void updateRecordDoctor(Connection connection,
                                           String doctor_medical_speciality,
                                           String doctor_name,
@@ -84,7 +84,7 @@ public class Doctors {
         }
     }
 
-    //to delete information in Doctor table, if Doctor doesn't work more
+    //to delete information in Doctor table, if Doctor doesn't work anymore
     public static void deleteRecordDoctor(Connection connection, int id_doctor_code) throws SQLException {
         String sql = "DELETE from doctor where id_doctor_code=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -121,7 +121,7 @@ public class Doctors {
         }
     }
 
-    //to enter information about Doctor, and after put information in Doctor table
+    //to enter information about Doctor, and later to put information in Doctor table
     public static void insertDoctorDetails(Connection connection) throws SQLException {
         //to get information from console about doctor
         Scanner scanner1 = new Scanner(System.in);
@@ -140,8 +140,8 @@ public class Doctors {
         System.out.println("Enter the price for appointment:");
         Double doctor_visit_price = scanner1.nextDouble();
 
-        //to load information about a doctor to Doctor table
-        System.out.println("Information about doctor is loading in database");
+        //to load information about a doctor in Doctor table
+        System.out.println("Information about doctor is loaded in the database");
         Doctors.insertIntoDoctorTable(connection,
                 doctor_medical_speciality,
                 doctor_name, doctor_surname,
@@ -152,8 +152,8 @@ public class Doctors {
     }
 
 
-    //to select, enter and update information in Doctor table, if it was some mistake before
-    public static void updateDoctorDetails(Connection connection) throws SQLException {                    //te var būt izvēle par to, kuru informāciju vadisim pa jaunu
+    //to select, enter and update information in Doctor table, if there was a mistake before
+    public static void updateDoctorDetails(Connection connection) throws SQLException {    //te var būt izvēle par to, kuru informāciju vadisim pa jaunu
         //to get information about updating records
         Scanner scanner = new Scanner(System.in);
         System.out.println("To update records about a doctor, please enter doctor's ID code: ");
@@ -177,7 +177,7 @@ public class Doctors {
             System.out.println("Enter the price of appointment:");
             Double doctor_visit_price_Update = scanner2.nextDouble();
 
-            // to update information in Doctor table, if it was some mistake before
+            // to update information in Doctor table, if there was some mistake before
             Doctors.updateRecordDoctor(connection,
                     doctor_medical_speciality_Update,
                     doctor_name_Update,
@@ -249,7 +249,7 @@ public class Doctors {
                 System.out.println("  3 - to see all your appointments for the selected day");
                 System.out.println("  4 - to see next appointment details");
 
-                //enter choose what you will to do in our application
+                //enter choice what you will do in our application
                 System.out.println("Enter your choice: ");
                 int selectedChoose = scanner.nextInt();
 
@@ -303,7 +303,7 @@ public class Doctors {
 
                         break;
 
-                    default: // all other choose: perform if and only if none of the above conditions are met
+                    default: // all other cases: perform if and only if none of the above conditions are met
                         System.out.println("Please enter a valid number depending on what you would like to do - 1, 2, 3 or 4.");
                 }
             } else {

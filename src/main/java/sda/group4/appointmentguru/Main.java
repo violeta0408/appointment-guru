@@ -12,10 +12,10 @@ public class Main {
 
         if (connection == null) {
             System.out.println("You are not yet in our hospital application!");
-            System.out.println("It is some problem and we can't get connection to the database!");
+            System.out.println("There is a problem and we can't get connection to the database!");
         } else {
-            //We have get connection with the database!!! Let's start!
-            System.out.println("Hello in our hospital application!");
+            //We have connection with the database!!! Let's start!
+            System.out.println("Welcome in our hospital application!");
 
             //create table for information about Doctors, who work in our hospital
             Doctors.createTableDoctor(connection);
@@ -26,9 +26,9 @@ public class Main {
             //create table for information about Patient
             Patients.createTablePatient(connection);
 
-            System.out.println("To continue if you are a Patient, please press --> '1'\n" +
-                    "If you are a Doctor, please press --> '2' \n" +
-                    "If you are a Database administrator - press --> '3'!");
+            System.out.println("To continue \n\tIf you are a Patient, please press --> '1'\n" +
+                    "\tIf you are a Doctor, please press --> '2' \n" +
+                    "\tIf you are a Database administrator - press --> '3'!");
             Scanner scanner = new Scanner(System.in);
             int role = scanner.nextInt();
 
@@ -42,7 +42,7 @@ public class Main {
                 case 3: //Database administrator
                     Administrator.administratorRequest(connection);
                     break;
-                default: //all other choose - perform if and only if none of the above conditions are met
+                default: //all other cases - perform if and only if none of the above conditions are met
                     System.out.println("Unfortunately, you entered invalid number! \nI" +
                             "f you are a Patient, please press --> '1'\n" +
                             "If you are a Doctor, please press --> '2' \n" +

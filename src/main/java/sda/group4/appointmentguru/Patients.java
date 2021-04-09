@@ -53,7 +53,7 @@ public class Patients {
         }
     }
 
-    //to enter information about Patient, and after put information in Patient table
+    //to enter information about Patient, and later to put information in Patient table
     public static void insertPatientDetails(Connection connection, String patient_person_code) throws SQLException {
         Scanner scanner1 = new Scanner(System.in);
         System.out.println("Please enter your name: ");
@@ -92,7 +92,7 @@ public class Patients {
         System.out.println("Please enter your personal code: ");
         String patient_person_code = scanner.next();
 
-        //start with while - to can run application many times
+        //start with while - to run application many times
         int runApplication = 1;
         while (runApplication == 1) {
             //information about what is possible to do in our application
@@ -104,7 +104,7 @@ public class Patients {
             System.out.println("  4 - to delete your data from the system.");
             // ? 5 - to history of all yours appointments
 
-            //enter choose what you will to do in our application
+            //enter choice what you would like to do in our application
             System.out.println("Enter your choice: ");
             int selectedChoose = scanner.nextInt();
 
@@ -114,7 +114,7 @@ public class Patients {
                     Appointment.viewMyAppointmentPatient(connection, patient_person_code);
                     break;
 
-                case 2: //2 - to apply visit to a doctor
+                case 2: //2 - to book an appointment
 
                     //to get all records about Doctors, who work in our hospital
                     System.out.println("You can book an appointment by choosing a doctor and doctor's speciality from the list below: ");
@@ -127,7 +127,7 @@ public class Patients {
                     //to check information about Doctor: is Doctor in DB (1) or not (0)
                     if (Doctors.isDoctorIDInDB(connection, selected_id_doctor_code) == 1) {
 
-                        //to get all records with appointment available for Patient - for Patient choice
+                        //to get all records with available appointments for Patient
                         System.out.println("Please choose the appointment from the list below: ");
                         Appointment.printAllRecordDateTimeAvailable(connection, selected_id_doctor_code);
 
@@ -143,7 +143,7 @@ public class Patients {
                             if (Appointment.isDateTimeBusyOrNot(connection, selected_id_appointment) == 1) {
                                 System.out.println("Sadly, at the moment there is no available appointment with this ID. Please make sure to enter ID code from the list of available appointment times. Please type the ID code of the available appointment.");
                             } else {
-                                //to get information about Patient it is in DB or not
+                                //to get information about Patient: it is in DB or not
                                 //to get new information from console about patient if we don't have it in DB
                                 if (Patients.isPersonalCodeInDB(connection, patient_person_code) != 1) {
                                     Patients.insertPatientDetails(connection, patient_person_code);
@@ -153,33 +153,33 @@ public class Patients {
                             }
                         }
                     } else {
-                        System.out.println("Doctor with this ID is not in our DB!");
+                        System.out.println("Doctor with this ID is not in our Database!");
                     }
                     break;
 
-                case 3: //3 - to delete visit to a doctor
+                case 3: //3 - to delete an appointment
 
-                    //to see all Patient reserved appointments
+                    //to see all appointments reserved by the Patient
                     Appointment.viewMyAppointmentPatient(connection, patient_person_code);
 
                     //to select the visit to cancel
                     System.out.println("Please enter the ID of the appointment which you would like to cancel: ");
-                    Integer appointment_id_toDeleteVisit = scanner.nextInt();
+                    int appointment_id_toDeleteVisit = scanner.nextInt();
 
-                    //to update table Appointments with date_time_busy=0 if patient delete appointment
+                    //to update table Appointments with date_time_busy=0 if patient deletes appointment
                     Appointment.updateAppointmentsWithNotBusy(connection, patient_person_code, appointment_id_toDeleteVisit);
                     break;
 
                 case 4: //4 - to delete person from database;
 
-                    //to update table Appointments with date_time_busy=0 if patient delete him salve from DB
+                    //to update table Appointments with date_time_busy=0 if patient delete himself from DB
                     Appointment.updateAppointmentsWithNotBusyPatientDelete(connection, patient_person_code);
 
                     //to delete information in Patient table
                     Patients.deleteRecordPatient(connection, patient_person_code);
                     break;
 
-                default: //all other choose: perform if and only if none of the above conditions are met
+                default: //all other cases: perform if and only if none of the above conditions are met
                     System.out.println("Sadly, you entered incorrect number. Please enter a valid number depending on what you would like to do - 1, 2, 3 or 4.");
             }
             System.out.println("If you would like to do more operations - press '1'");

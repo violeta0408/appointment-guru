@@ -6,9 +6,9 @@ import java.util.Scanner;
 
 public class Administrator {
 
-    //
+
     public static void administratorRequest(Connection connection) throws SQLException {
-        //start with while - to can run application many times
+        //start with while - to run application many times
         int runApplication = 1;
         while (runApplication == 1) {
             //information about what is possible to do in our application
@@ -51,7 +51,7 @@ public class Administrator {
                     System.out.println("All records in the database");
                     Doctors.printAllRecordDoctor(connection);
 
-                    //to delete information from Doctor and Appointment table, if Doctor doesn't work more
+                    //to delete information from Doctor and Appointment table, if Doctor doesn't work anymore
                     System.out.println("To delete records about the doctor, please enter doctor's ID code");
                     int idDoctorCodeToDelete = scanner.nextInt();
                     Doctors.deleteRecordDoctor(connection, idDoctorCodeToDelete);
@@ -65,7 +65,7 @@ public class Administrator {
                     Appointment.insertInfoIntoAppointment(connection);
                     break;
 
-                default: //all other choose - perform if and only if none of the above conditions are met
+                default: //all other cases - perform if and only if none of the above conditions are met
                     System.out.println("Please enter a valid number - 1, 2, 3 or 4.");
             }
             System.out.println("If you would like to do more operations - press 1");

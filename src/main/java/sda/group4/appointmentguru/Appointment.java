@@ -40,7 +40,7 @@ public class Appointment {
         }
     }
 
-    //to enter information for Appointment Table and after put information in Appointment table
+    //to enter information in Appointment Table and later to put information in the Appointment table
     public static void insertInfoIntoAppointment(Connection connection) throws SQLException {
         Scanner scanner1 = new Scanner(System.in);
         System.out.println("Please enter the doctor's ID code");
@@ -49,9 +49,9 @@ public class Appointment {
         Date visit_date = Date.valueOf(scanner1.next());
         System.out.println("Please enter the time (HH:MM:SS) of the appointment");
         Time visit_time = Time.valueOf(scanner1.next());
-        //to load information about the available appointment times in the Appointment tabula
+        //to insert information about the available appointment times in the Appointment table
         System.out.println("Information about the available appointment times is loaded in the database");
-        Appointment.insertInfoIntoTableAppointment(connection, id_doctor_code, visit_date, visit_time); //to insert information in table
+        Appointment.insertInfoIntoTableAppointment(connection, id_doctor_code, visit_date, visit_time);
     }
 
     //to update table Appointments with date_time_busy=1
@@ -70,7 +70,7 @@ public class Appointment {
         }
     }
 
-    //to update table Appointments with date_time_busy=0 if patient delete appointment
+    //to update table Appointments with date_time_busy=0 if patient deletes appointment
     public static void updateAppointmentsWithNotBusy(Connection connection, String patient_person_code, int id_appointment) throws SQLException {
         String sql = "UPDATE appointment SET date_time_busy=?, patient_person_code=? WHERE patient_person_code=? AND id_appointment=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -87,7 +87,7 @@ public class Appointment {
         }
     }
 
-    //to update table Appointments with date_time_busy=0 if patient delete him salve from DB
+    //to update table Appointments with date_time_busy=0 if patient deletes himself from DB
     public static void updateAppointmentsWithNotBusyPatientDelete(Connection connection, String patient_person_code) throws SQLException {
         String sql = "UPDATE appointment SET date_time_busy=?, patient_person_code=? WHERE patient_person_code=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -103,7 +103,7 @@ public class Appointment {
         }
     }
 
-    //to get all records with appointment available for Patient - for Patient choice
+    //to get all records with available appointments for Patient
     public static void printAllRecordDateTimeAvailable(Connection connection, int selected_id_doctor_code) throws SQLException {
         String sql = "SELECT appointment.id_appointment, " +
                 "doctor.doctor_medical_speciality, doctor.doctor_name, doctor.doctor_surname, " +
@@ -239,7 +239,7 @@ public class Appointment {
     }
 
 
-    //
+
     public static void viewNextAppointmentForDoctor(Connection connection, int id_doctor_code, Date currentDay, Time currentDayTime) throws SQLException {
         String query = "SELECT visit_date, visit_time, patient_name, patient_surname " +
                 "FROM appointment " +
@@ -282,7 +282,7 @@ public class Appointment {
                 "ORDER BY visit_date ASC, visit_time ASC";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
-            System.out.printf("Your appointment(s): \n");
+            System.out.println("Your appointment(s): \n");
             System.out.print("\033[4;1;255m");
             System.out.println("Appointment ID  |  Date of the appointment  |  Time of the appointment   |   Doctor's name and surname  |  Doctor's speciality  |  Room number |  Price for the appointment");
             System.out.print("\033[0m");
@@ -299,12 +299,12 @@ public class Appointment {
                 Double doctor_visit_price = resultSet.getDouble("doctor_visit_price");
                 System.out.printf(" \t %-20s %-25s %-25s %-10s %-19s %-24s %-18s %s EUR\n", id_appointment, visit_date, visit_time, doctor_name, doctor_surname,
                         doctor_medical_speciality, doctor_room_number, doctor_visit_price);
-                System.out.printf("");
+                System.out.println(" ");
             }
         }
     }
 
-    //to get information is date_time_busy or not (if busy=1; if not =0)
+    //to get information: is date_time_busy or not (if busy=1; if not =0)
     public static int isDateTimeBusyOrNot(Connection connection, int id_appointment) throws SQLException {
         String sql = "SELECT date_time_busy from appointment where id_appointment=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -312,7 +312,7 @@ public class Appointment {
             ResultSet resultSet = statement.executeQuery();
             int date_time_busy_result = 0;
             while (resultSet.next()) {
-                Integer date_time_busy = resultSet.getInt("date_time_busy");
+                int date_time_busy = resultSet.getInt("date_time_busy");
                 if (date_time_busy == 1) {
                     date_time_busy_result = 1;
                 } else {
@@ -323,7 +323,7 @@ public class Appointment {
         }
     }
 
-    //to get information is appointment for selected doctor or not (if is=1, if not=0)
+    //to get information: is appointment for selected doctor or not (if is=1, if not=0)
     public static int isAppointmentForSelectedDoctor(Connection connection, int id_appointment, int id_doctor_code_selected) throws SQLException {
         String sql = "SELECT id_doctor_code from appointment where id_appointment=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -331,7 +331,7 @@ public class Appointment {
             ResultSet resultSet = statement.executeQuery();
             int id_doctor_code_result = 0;
             while (resultSet.next()) {
-                Integer id_doctor_code = resultSet.getInt("id_doctor_code");
+                int id_doctor_code = resultSet.getInt("id_doctor_code");
                 if (id_doctor_code == id_doctor_code_selected) {
                     id_doctor_code_result = 1;
                 } else {

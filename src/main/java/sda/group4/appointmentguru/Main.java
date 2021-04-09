@@ -33,7 +33,7 @@ public class Main {
             int role = scanner.nextInt();
 
             switch (role) {
-                case 1: //Patient - can see his/her appointments, book an appointment, delete his/her appointment and personal information from DB;
+                case 1: //Patient - can see his/her appointments, book an appointment, cancel his/her appointment and personal information from DB;
                     Patients.patientRequest(connection);
                     break;
                 case 2: //Doctor - can see his/her all appointments, appointments for today, for any selected day and next appointment

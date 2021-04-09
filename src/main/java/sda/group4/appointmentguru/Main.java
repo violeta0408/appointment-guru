@@ -33,13 +33,13 @@ public class Main {
             int role = scanner.nextInt();
 
             switch (role) {
-                case 1: //Patient
+                case 1: //Patient - can see his/her appointments, book an appointment, delete his/her appointment and personal information from DB;
                     Patients.patientRequest(connection);
                     break;
-                case 2: //Doctor
+                case 2: //Doctor - can see his/her all appointments, appointments for today, for any selected day and next appointment
                     Doctors.doctorRequest(connection);
                     break;
-                case 3: //Database administrator
+                case 3: //Database administrator - can insert, update and delete info in DB about the doctors and enter in the system info about the available appointments
                     Administrator.administratorRequest(connection);
                     break;
                 default: //all other cases - perform if and only if none of the above conditions are met

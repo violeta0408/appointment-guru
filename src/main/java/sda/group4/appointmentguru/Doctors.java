@@ -25,7 +25,7 @@ public class Doctors {
         }
     }
 
-    //to put information in Doctor table, if start work new Doctor
+    //to put information in Doctor table, if start working new Doctor
     public static void insertIntoDoctorTable(Connection connection,
                                              String doctor_medical_speciality,
                                              String doctor_name,

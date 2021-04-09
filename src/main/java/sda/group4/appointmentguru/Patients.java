@@ -85,7 +85,7 @@ public class Patients {
     }
 
 
-    //
+    //Patient can see his/her appointments, book an appointment, cancel his/her appointment and personal information from DB
     public static void patientRequest(Connection connection) throws SQLException {
         //to identify person
         Scanner scanner = new Scanner(System.in);
@@ -98,11 +98,12 @@ public class Patients {
             //information about what is possible to do in our application
             System.out.println("What would you like to do? Please type (1-4): ");
             System.out.println("  1 - to see the details of all your appointment(s)");
-            // japadoma vai tikai tie, kas nakotne (1) ;? vai pavisu laiku visi - ari pagatne (5)
             System.out.println("  2 - to apply for an appointment;");
             System.out.println("  3 - to cancel an appointment;");
             System.out.println("  4 - to delete your data from the system.");
-            // ? 5 - to history of all yours appointments
+            // japadoma vai tikai tie, kas nakotne (1) ;? vai pavisu laiku visi - ari pagatne (5)
+            // 1 - to history of all yours appointments (it is also with case 3, should Update after improvements)
+            // Possible improvement: 5, 6 - can divide to past and future with current day and current time
 
             //enter choice what you would like to do in our application
             System.out.println("Enter your choice: ");
@@ -117,8 +118,9 @@ public class Patients {
                 case 2: //2 - to book an appointment
 
                     //to get all records about Doctors, who work in our hospital
-                    System.out.println("You can book an appointment by choosing a doctor and doctor's speciality from the list below: ");
+                    System.out.println("You can book an appointment by choosing a doctor from the list below: ");
                     Doctors.printAllRecordDoctor(connection);
+                    //Possible improvement: start with Doctor's speciality
 
                     //to select the doctor from the list
                     System.out.println("To book an appointment please enter the doctor's ID code from a list: ");
@@ -143,7 +145,7 @@ public class Patients {
                             if (Appointment.isDateTimeBusyOrNot(connection, selected_id_appointment) == 1) {
                                 System.out.println("Sadly, at the moment there is no available appointment with this ID. Please make sure to enter ID code from the list of available appointment times. Please type the ID code of the available appointment.");
                             } else {
-                                //to get information about Patient: it is in DB or not
+                                //to get information about Patient: it exists in DB or not
                                 //to get new information from console about patient if we don't have it in DB
                                 if (Patients.isPersonalCodeInDB(connection, patient_person_code) != 1) {
                                     Patients.insertPatientDetails(connection, patient_person_code);

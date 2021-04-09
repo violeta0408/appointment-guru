@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Administrator {
 
-
+    //Database administrator - can insert, update and delete info in DB about the doctors and enter in the system info about the available appointments
     public static void administratorRequest(Connection connection) throws SQLException {
         //start with while - to run application many times
         int runApplication = 1;

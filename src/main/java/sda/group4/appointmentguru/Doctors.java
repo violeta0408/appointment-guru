@@ -256,7 +256,6 @@ public class Doctors {
                 //operation after selectedChoose depend of choose - start process
                 switch (selectedChoose) {
                     case 1: //1 - to see all appointment as a doctor
-                        System.out.println("All your appointments:");
                         Appointment.viewMyAppointmentDoctor(connection, selected_id_doctor_code);
                         break;
 

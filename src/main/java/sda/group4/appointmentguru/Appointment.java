@@ -187,12 +187,16 @@ public class Appointment {
 
 
 //    So metodi varbūt nemaz nevajadzēs, jo izveidota tikai balstoties uz datumu. Tadejadi izvada tikai pirmo pierakstu dienā
+//    šeit daļu pieliku, jāpaskatas kā ir tagad
 //    public static void viewNextAppointmentForDoctorBasedOnCurrentDate(Connection connection, int id_doctor_code, Date currentDay) throws SQLException {
 //        String query = "SELECT visit_date, visit_time, patient_name, patient_surname " +
 //                "FROM appointment " +
 //                "INNER JOIN patient " +
 //                "ON appointment.patient_person_code = patient.patient_person_code " +
-//                "WHERE id_doctor_code = " + id_doctor_code + " AND visit_date >= '" + currentDay + "'AND date_time_busy = '1' LIMIT 1";
+//                "WHERE id_doctor_code = " + id_doctor_code +
+//                " AND visit_date >= '" + currentDay + "'AND date_time_busy = '1' "+
+//                "ORDER BY visit_date ASC, visit_time ASC "+
+//                "LIMIT 1";
 //        try (PreparedStatement statement = connection.prepareStatement(query)) {
 //            ResultSet resultSet = statement.executeQuery();
 //            System.out.print("\033[4;1;255m");
@@ -209,13 +213,16 @@ public class Appointment {
 //    }
 
     //to get next records with appointment for Doctor
-    // jāpaskatas vai korekti viss nostrada
+    // jāpaskatas vai korekti viss nostrada, skotneji izskatas, ka ir korekti
     public static void viewNextAppointmentForDoctorBasedOnCurrentDateTime(Connection connection, int id_doctor_code, Date currentDay, Time currentTime) throws SQLException {
         String query = "SELECT visit_date, visit_time, patient_name, patient_surname " +
                 "FROM appointment " +
                 "INNER JOIN patient " +
                 "ON appointment.patient_person_code = patient.patient_person_code " +
-                "WHERE id_doctor_code = " + id_doctor_code + " AND visit_date >= '" + currentDay + "' AND visit_time >= '" + currentTime + "'AND date_time_busy = '1' LIMIT 1";
+                "WHERE id_doctor_code = " + id_doctor_code +
+                " AND visit_date >= '" + currentDay + "' AND visit_time >= '" + currentTime + "'AND date_time_busy = '1' " +
+                "ORDER BY visit_date ASC, visit_time ASC "+
+                "LIMIT 1";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
             System.out.print("\033[4;1;255m");
@@ -238,7 +245,10 @@ public class Appointment {
                 "FROM appointment " +
                 "INNER JOIN patient " +
                 "ON appointment.patient_person_code = patient.patient_person_code " +
-                "WHERE id_doctor_code = " + id_doctor_code + " AND visit_date >= '" + currentDay + "' AND visit_time > '" + currentDayTime + "' AND date_time_busy = '1' LIMIT 1";
+                "WHERE id_doctor_code = " + id_doctor_code +
+                " AND visit_date >= '" + currentDay + "' AND visit_time > '" + currentDayTime + "' AND date_time_busy = '1' " +
+                "ORDER BY visit_date ASC, visit_time ASC "+
+                "LIMIT 1";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
             boolean notEmptyRecord = resultSet.next();
